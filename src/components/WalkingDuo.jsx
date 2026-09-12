@@ -28,6 +28,14 @@ export default function WalkingDuo({ isDarkMode }) {
   const [catJumping, setCatJumping] = useState(false);
   const timeoutRef = useRef(null);
 
+  const CLICK_RESPONSES = [
+    'Hup! 🐾',
+    'Semangat koding! 💻✨',
+    'Meoww~ ❤️',
+    'Halo! Senang kamu mampir 👋'
+  ];
+  const clickCountRef = useRef(0);
+
   // Behavioral Routine Loop
   useEffect(() => {
     const step = ROUTINES[routineIndex];
@@ -49,7 +57,7 @@ export default function WalkingDuo({ isDarkMode }) {
     };
   }, [routineIndex]);
 
-  // Click Interaction: Natural joyful hop together
+  // Click Interaction: Natural joyful hop together with fun dialog
   const handleClick = (e) => {
     e.stopPropagation();
     sound.play('space');
@@ -59,10 +67,15 @@ export default function WalkingDuo({ isDarkMode }) {
     setTimeout(() => setIsJumping(false), 400);
     setTimeout(() => setCatJumping(false), 480);
 
-    setSpeechBubble('Hup! 🐾');
+    const reply = CLICK_RESPONSES[clickCountRef.current % CLICK_RESPONSES.length];
+    clickCountRef.current += 1;
+    setSpeechBubble(reply);
+
     setTimeout(() => {
-      setSpeechBubble('');
-    }, 1800);
+      // Revert to current routine bubble if present, or clear
+      const currentStep = ROUTINES[routineIndex];
+      setSpeechBubble(currentStep.bubble || '');
+    }, 2200);
   };
 
   // Determine Sprite for Egy
@@ -94,26 +107,7 @@ export default function WalkingDuo({ isDarkMode }) {
       title="Klik untuk melompat bersama!"
       className="relative w-full h-12 pointer-events-auto cursor-pointer select-none overflow-visible -mb-1 z-20"
     >
-      {/* Speech Bubble */}
-      {speechBubble && (
-        <div 
-          style={{ 
-            left: `${posX}%`,
-            transition: `left ${transitionSpeed} linear`
-          }}
-          className="absolute -top-7 -translate-x-1/2 z-30 pointer-events-none"
-        >
-          <div className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono shadow-lg whitespace-nowrap animate-bounce border ${
-            isDarkMode 
-              ? 'bg-cosmos-950/95 border-indigo-500/40 text-indigo-300 shadow-indigo-950/80' 
-              : 'bg-white/95 border-slate-300 text-slate-800 shadow-md'
-          }`}>
-            <span>{speechBubble}</span>
-          </div>
-        </div>
-      )}
-
-      {/* 1. EGY CHARACTER */}
+      {/* 1. EGY CHARACTER (Leads the stroll) */}
       <div 
         style={{ 
           left: `${posX}%`,
@@ -121,6 +115,33 @@ export default function WalkingDuo({ isDarkMode }) {
         }}
         className="absolute bottom-0 -translate-x-1/2 flex flex-col items-center z-20"
       >
+        {/* Speech Bubble - Strictly locked directly above Egy's head & NEVER inverted */}
+        {speechBubble && (
+          <div 
+            style={{ 
+              transform: 'none',
+              direction: 'ltr',
+              unicodeBidi: 'isolate'
+            }}
+            className="absolute -top-9 left-1/2 -translate-x-1/2 z-30 pointer-events-none flex flex-col items-center"
+          >
+            <div className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono shadow-xl whitespace-nowrap animate-bounce border ${
+              isDarkMode 
+                ? 'bg-cosmos-950/95 border-indigo-500/50 text-indigo-300 shadow-indigo-950/80' 
+                : 'bg-white/95 border-slate-300 text-slate-800 shadow-md'
+            }`}>
+              <span className="inline-block select-none">{speechBubble}</span>
+            </div>
+            {/* Cute Speech Bubble Tail pointing straight to Egy's head */}
+            <div className={`w-1.5 h-1.5 -mt-0.5 rotate-45 border-r border-b ${
+              isDarkMode 
+                ? 'bg-cosmos-950 border-indigo-500/50' 
+                : 'bg-white border-slate-300'
+            }`} />
+          </div>
+        )}
+
+        {/* Egy Sprite (Only image gets scaled horizontally for direction, NEVER parent or bubble) */}
         <img
           src={getEgySprite()}
           alt="Egydia Pixel Character"
