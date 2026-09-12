@@ -21,42 +21,42 @@ export default function Footer({ isDarkMode }) {
 
   return (
     <>
-      <footer className={`pt-12 pb-24 sm:pb-28 transition-colors relative z-10 w-full border-t ${
+      <footer className={`pt-6 pb-16 sm:pb-16 transition-colors relative z-10 w-full border-t ${
         isDarkMode 
-          ? 'bg-cosmos-950/60 backdrop-blur-xl border-indigo-500/20 text-slate-400' 
-          : 'bg-white/70 backdrop-blur-xl border-slate-200 text-slate-600'
+          ? 'bg-cosmos-950/70 backdrop-blur-xl border-indigo-500/20 text-slate-400' 
+          : 'bg-white/80 backdrop-blur-xl border-slate-200 text-slate-600'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pb-6 border-b border-indigo-500/10">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-4 border-b border-indigo-500/10">
             
             {/* Left: Brand info */}
             <div className="text-center sm:text-left">
-              <div className="flex items-center justify-center sm:justify-start gap-1.5 font-display font-bold text-base">
+              <div className="flex items-center justify-center sm:justify-start gap-1.5 font-display font-bold text-sm">
                 <span className={isDarkMode ? 'text-white' : 'text-slate-900'}>
                   {PERSONAL_INFO.name}
                 </span>
                 <span className="text-indigo-400 font-mono">.</span>
               </div>
-              <p className="text-xs mt-1 max-w-md opacity-80">
-                Frontend Web Developer & UI/UX Designer · Lulusan Sistem Informasi Universitas Jambi (Cum Laude, IPK {PERSONAL_INFO.gpa}).
+              <p className="text-[11px] sm:text-xs mt-0.5 max-w-md opacity-80">
+                Frontend Web Developer & UI/UX Designer · Universitas Jambi (Cum Laude, IPK {PERSONAL_INFO.gpa})
               </p>
             </div>
 
             {/* Right: Quick Social Icon Links */}
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2">
               <a
                 href={PERSONAL_INFO.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => sound.play('click')}
-                className={`p-2 rounded-xl border transition-all hover:scale-105 ${
+                className={`p-1.5 rounded-lg border transition-all hover:scale-105 ${
                   isDarkMode 
                     ? 'border-indigo-500/20 bg-indigo-950/30 hover:bg-white/10 text-slate-300 hover:text-white' 
                     : 'border-slate-300 bg-white hover:bg-slate-50 text-slate-700'
                 }`}
                 title="GitHub"
               >
-                <Github className="w-4 h-4" />
+                <Github className="w-3.5 h-3.5" />
               </a>
 
               <a
@@ -64,14 +64,14 @@ export default function Footer({ isDarkMode }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => sound.play('click')}
-                className={`p-2 rounded-xl border transition-all hover:scale-105 ${
+                className={`p-1.5 rounded-lg border transition-all hover:scale-105 ${
                   isDarkMode 
                     ? 'border-indigo-500/20 bg-indigo-950/30 hover:bg-white/10 text-slate-300 hover:text-white' 
                     : 'border-slate-300 bg-white hover:bg-slate-50 text-slate-700'
                 }`}
                 title="LinkedIn"
               >
-                <Linkedin className="w-4 h-4" />
+                <Linkedin className="w-3.5 h-3.5" />
               </a>
 
               <a
@@ -79,34 +79,34 @@ export default function Footer({ isDarkMode }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => sound.play('click')}
-                className={`p-2 rounded-xl border transition-all hover:scale-105 ${
+                className={`p-1.5 rounded-lg border transition-all hover:scale-105 ${
                   isDarkMode 
                     ? 'border-indigo-500/20 bg-indigo-950/30 hover:bg-white/10 text-slate-300 hover:text-white' 
                     : 'border-slate-300 bg-white hover:bg-slate-50 text-slate-700'
                 }`}
                 title="WhatsApp"
               >
-                <PhoneCall className="w-4 h-4" />
+                <PhoneCall className="w-3.5 h-3.5" />
               </a>
 
               <a
                 href={`mailto:${PERSONAL_INFO.email}`}
                 onClick={() => sound.play('click')}
-                className={`p-2 rounded-xl border transition-all hover:scale-105 ${
+                className={`p-1.5 rounded-lg border transition-all hover:scale-105 ${
                   isDarkMode 
                     ? 'border-indigo-500/20 bg-indigo-950/30 hover:bg-white/10 text-slate-300 hover:text-white' 
                     : 'border-slate-300 bg-white hover:bg-slate-50 text-slate-700'
                 }`}
                 title="Email"
               >
-                <Mail className="w-4 h-4" />
+                <Mail className="w-3.5 h-3.5" />
               </a>
             </div>
 
           </div>
 
           {/* Bottom Copyright Strip */}
-          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2 text-center sm:text-left opacity-75">
+          <div className="pt-3 flex flex-col sm:flex-row items-center justify-between text-[11px] sm:text-xs text-slate-500 gap-1.5 text-center sm:text-left opacity-75">
             <span>© 2026 {PERSONAL_INFO.name}, S.Kom. All rights reserved.</span>
             <span>Dibangun dengan React 18, Vite & Tailwind CSS</span>
           </div>
