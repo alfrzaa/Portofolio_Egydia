@@ -10,7 +10,6 @@ import CertificatesVault from './components/CertificatesVault';
 import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import BottomNav from './components/BottomNav';
-import WalkingDuo from './components/WalkingDuo';
 import InteractiveTerminal from './components/InteractiveTerminal';
 import ImageLightbox from './components/ImageLightbox';
 import { sound } from './components/AudioController';
@@ -101,10 +100,7 @@ export default function App() {
         onOpenTerminal={() => setTerminalOpen(true)}
       />
 
-      {/* Walking Duo: Egydia & Tabby Cat walking seamlessly right above the Bottom Nav */}
-      <WalkingDuo isDarkMode={isDarkMode} />
-
-      {/* Floating Bottom Navigation Bar */}
+      {/* Floating Bottom Navigation Bar with integrated Walking Duo */}
       <BottomNav isDarkMode={isDarkMode} />
 
       {/* Floating CLI Terminal Drawer */}

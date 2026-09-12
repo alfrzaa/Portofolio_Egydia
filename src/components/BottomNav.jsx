@@ -8,6 +8,7 @@ import {
   Mail 
 } from 'lucide-react';
 import { sound } from './AudioController';
+import WalkingDuo from './WalkingDuo';
 
 export default function BottomNav({ isDarkMode }) {
   const [activeSection, setActiveSection] = useState('hero');
@@ -43,8 +44,11 @@ export default function BottomNav({ isDarkMode }) {
   return (
     <nav 
       aria-label="Bottom Navigation"
-      className="fixed bottom-3 sm:bottom-5 left-1/2 -translate-x-1/2 z-40 px-2 sm:px-0 max-w-[95vw]"
+      className="fixed bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 z-40 px-2 sm:px-0 max-w-[95vw] flex flex-col items-center"
     >
+      {/* Walking Duo: Egy & Cat walking strictly on top of the navbar pill */}
+      <WalkingDuo isDarkMode={isDarkMode} />
+
       <div className={`flex items-center justify-center gap-1 sm:gap-2 px-2.5 sm:px-4 py-2 sm:py-2.5 rounded-full border backdrop-blur-xl shadow-2xl transition-all duration-300 ${
         isDarkMode
           ? 'bg-cosmos-950/90 border-indigo-500/30 text-slate-400 shadow-indigo-950/60'

@@ -1,138 +1,90 @@
 import React, { useState, useRef } from 'react';
 import { sound } from './AudioController';
 
-const POSE_SEQUENCE = ['jump', 'wave', 'cuddle'];
+const CLICK_BUBBLES = [
+  "Yaaay! 🐾",
+  "Halo! 👋✨",
+  "Meow! ❤️",
+  "Semangat! 🚀"
+];
 
 export default function WalkingDuo({ isDarkMode }) {
-  const [currentPose, setCurrentPose] = useState('walk');
   const [clickCount, setClickCount] = useState(0);
+  const [egyJumping, setEgyJumping] = useState(false);
+  const [catJumping, setCatJumping] = useState(false);
+  const [bubbleText, setBubbleText] = useState('');
   const [showBubble, setShowBubble] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  const timerRef = useRef(null);
+  const bubbleTimer = useRef(null);
 
   const handleClick = (e) => {
     e.stopPropagation();
 
-    // 1x -> jump, 2x -> wave, 3x -> cuddle
-    const nextPose = POSE_SEQUENCE[clickCount % POSE_SEQUENCE.length];
+    // Play retro chime
+    sound.play('space');
+
+    // Natural physical jump: Egy jumps first, Cat reacts with a natural 90ms delay!
+    setEgyJumping(true);
+    setTimeout(() => {
+      setCatJumping(true);
+    }, 90);
+
+    setTimeout(() => setEgyJumping(false), 380);
+    setTimeout(() => setCatJumping(false), 460);
+
+    // Show cheerful reaction bubble without changing the character
+    const text = CLICK_BUBBLES[clickCount % CLICK_BUBBLES.length];
     setClickCount(prev => prev + 1);
-    setCurrentPose(nextPose);
+    setBubbleText(text);
     setShowBubble(true);
 
-    if (nextPose === 'jump') {
-      sound.play('space');
-    } else if (nextPose === 'wave') {
-      sound.play('toggle');
-    } else {
-      sound.play('click');
+    if (bubbleTimer.current) {
+      clearTimeout(bubbleTimer.current);
     }
-
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-    timerRef.current = setTimeout(() => {
-      setCurrentPose('walk');
+    bubbleTimer.current = setTimeout(() => {
       setShowBubble(false);
-    }, 2400);
-  };
-
-  const getBubbleText = () => {
-    if (currentPose === 'jump') return 'Yaaay! 🐾 Jump!';
-    if (currentPose === 'wave') return 'Halo dari Egydia & Kucing! 👋✨';
-    if (currentPose === 'cuddle') return 'Meow! 🐾 Sayang anabul ❤️';
-    return null;
+    }, 1800);
   };
 
   return (
-    <div className="fixed bottom-14 sm:bottom-16 left-0 right-0 h-16 pointer-events-none z-30 select-none overflow-hidden">
+    <div 
+      onClick={handleClick}
+      title="Klik untuk melompat bersama!"
+      className="relative w-full h-11 pointer-events-auto cursor-pointer select-none overflow-visible -mb-1 z-20"
+    >
       
-      {/* Clickable interactive container */}
-      <div 
-        onClick={handleClick}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        title="Klik 1x Lompat Depan, 2x Melambai, 3x Gendong Kucing!"
-        className="w-full h-full relative"
-      >
+      {/* 1. EGY (Leads the stroll along navbar) */}
+      <div className="absolute bottom-0 animate-walk-nav-egy flex flex-col items-center z-10">
         
-        {/* CASE A: CUDDLE POSE (Both united in arms) */}
-        {currentPose === 'cuddle' ? (
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-auto cursor-pointer flex flex-col items-center">
-            {showBubble && (
-              <div className={`mb-1 px-2.5 py-1 rounded-xl text-[10px] font-mono shadow-xl whitespace-nowrap animate-bounce border ${
-                isDarkMode 
-                  ? 'bg-cosmos-950/95 border-indigo-500/40 text-indigo-300 shadow-indigo-950/80' 
-                  : 'bg-white/95 border-slate-300 text-slate-800 shadow-md'
-              }`}>
-                <span>{getBubbleText()}</span>
-              </div>
-            )}
-            <img
-              src="/assets/images/egydia_cat_cuddle.gif"
-              alt="Egydia Cuddling Cat"
-              className="h-14 w-auto [image-rendering:pixelated] drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] transition-transform hover:scale-110"
-            />
+        {/* Reaction Bubble */}
+        {showBubble && (
+          <div className={`absolute -top-7 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full text-[10px] font-mono shadow-lg whitespace-nowrap animate-bounce border ${
+            isDarkMode 
+              ? 'bg-cosmos-950/95 border-indigo-500/40 text-indigo-300 shadow-indigo-950/80' 
+              : 'bg-white/95 border-slate-300 text-slate-800 shadow-md'
+          }`}>
+            <span>{bubbleText}</span>
           </div>
-        ) : (
-          /* CASE B: SEPARATE CHARACTERS (Cat follows behind Egy) */
-          <>
-            {/* 1. EGY (Leads the walk) */}
-            <div 
-              className={`absolute bottom-0 ${
-                currentPose === 'walk'
-                  ? 'animate-walk-egy' 
-                  : 'animate-walk-egy [animation-play-state:paused]'
-              } pointer-events-auto cursor-pointer flex flex-col items-center z-10`}
-            >
-              {/* Speech Bubble */}
-              {showBubble && getBubbleText() && (
-                <div className={`mb-1 px-2.5 py-1 rounded-xl text-[10px] font-mono shadow-xl whitespace-nowrap animate-bounce border ${
-                  isDarkMode 
-                    ? 'bg-cosmos-950/95 border-indigo-500/40 text-indigo-300 shadow-indigo-950/80' 
-                    : 'bg-white/95 border-slate-300 text-slate-800 shadow-md'
-                }`}>
-                  <span>{getBubbleText()}</span>
-                </div>
-              )}
-
-              {/* Egy Sprite */}
-              <img
-                src={
-                  currentPose === 'jump'
-                    ? '/assets/images/egy_jump_front.gif'
-                    : currentPose === 'wave'
-                      ? '/assets/images/egy_wave_front.gif'
-                      : '/assets/images/egy_walk.gif'
-                }
-                alt="Egydia Pixel Art"
-                className="h-14 w-auto [image-rendering:pixelated] drop-shadow-[0_4px_8px_rgba(0,0,0,0.4)] transition-transform hover:scale-110"
-              />
-            </div>
-
-            {/* 2. CAT (Faithfully following behind Egy) */}
-            <div 
-              className={`absolute bottom-0 ${
-                currentPose === 'walk'
-                  ? 'animate-follow-cat' 
-                  : 'animate-follow-cat [animation-play-state:paused]'
-              } pointer-events-auto cursor-pointer flex flex-col items-center`}
-            >
-              {/* Cat Sprite */}
-              <img
-                src={
-                  currentPose === 'jump'
-                    ? '/assets/images/cat_jump.gif'
-                    : isHovered || currentPose === 'wave'
-                      ? '/assets/images/cat_sit.gif'
-                      : '/assets/images/cat_walk.gif'
-                }
-                alt="Tabby Cat Following"
-                className="h-9 w-auto [image-rendering:pixelated] drop-shadow-[0_4px_6px_rgba(0,0,0,0.3)] transition-transform hover:scale-110"
-              />
-            </div>
-          </>
         )}
 
+        {/* Egy Sprite (Consistent single character, smooth natural jump) */}
+        <img
+          src="/assets/images/egy_walk.gif"
+          alt="Egydia Pixel Character"
+          className={`h-11 w-auto [image-rendering:pixelated] drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)] transition-transform duration-200 ${
+            egyJumping ? '-translate-y-4 scale-105' : 'hover:scale-105'
+          }`}
+        />
+      </div>
+
+      {/* 2. TABBY CAT (Faithfully follows behind Egy, natural delayed hop) */}
+      <div className="absolute bottom-0 animate-follow-nav-cat flex flex-col items-center">
+        <img
+          src="/assets/images/cat_walk.gif"
+          alt="Tabby Cat Following"
+          className={`h-6 w-auto [image-rendering:pixelated] drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] transition-transform duration-200 ${
+            catJumping ? '-translate-y-3 scale-105' : 'hover:scale-105'
+          }`}
+        />
       </div>
 
     </div>
