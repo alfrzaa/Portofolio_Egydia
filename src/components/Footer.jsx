@@ -21,7 +21,7 @@ export default function Footer({ isDarkMode }) {
 
   return (
     <>
-      <footer className={`pt-6 pb-16 sm:pb-16 transition-colors relative z-10 w-full border-t ${
+      <footer className={`pt-4 pb-2 sm:pb-2.5 transition-colors relative z-10 w-full border-t ${
         isDarkMode 
           ? 'bg-cosmos-950/70 backdrop-blur-xl border-indigo-500/20 text-slate-400' 
           : 'bg-white/80 backdrop-blur-xl border-slate-200 text-slate-600'
@@ -106,7 +106,7 @@ export default function Footer({ isDarkMode }) {
           </div>
 
           {/* Bottom Copyright Strip */}
-          <div className="pt-3 flex flex-col sm:flex-row items-center justify-between text-[11px] sm:text-xs text-slate-500 gap-1.5 text-center sm:text-left opacity-75">
+          <div className="pt-2 pb-0.5 flex flex-col sm:flex-row items-center justify-between text-[11px] sm:text-xs text-slate-500 gap-1 text-center sm:text-left opacity-75">
             <span>© 2026 {PERSONAL_INFO.name}, S.Kom. All rights reserved.</span>
             <span>Dibangun dengan React 18, Vite & Tailwind CSS</span>
           </div>

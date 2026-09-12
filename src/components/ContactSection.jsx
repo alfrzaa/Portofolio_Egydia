@@ -81,7 +81,7 @@ export default function ContactSection({ isDarkMode }) {
   ];
 
   return (
-    <section id="contact" className="py-10 sm:py-14 scroll-mt-6 relative z-10">
+    <section id="contact" className="pt-8 pb-8 sm:pt-10 sm:pb-10 scroll-mt-6 relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
