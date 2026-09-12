@@ -47,29 +47,29 @@
 /* Walking Duo Animation */
 @keyframes walkAcross {
   0% {
-    left: -100px;
+    left: -80px;
     transform: scaleX(1);
   }
   48% {
-    left: calc(100% - 40px);
+    left: calc(100% - 60px);
     transform: scaleX(1);
   }
   50% {
-    left: calc(100% - 40px);
+    left: calc(100% - 60px);
     transform: scaleX(-1);
   }
   98% {
-    left: -100px;
+    left: -80px;
     transform: scaleX(-1);
   }
   100% {
-    left: -100px;
+    left: -80px;
     transform: scaleX(1);
   }
 }
 
 .animate-walk-across {
-  animation: walkAcross 30s linear infinite;
+  animation: walkAcross 60s linear infinite;
 }
 
 .animate-walk-across:hover {

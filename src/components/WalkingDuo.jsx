@@ -1,61 +1,93 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { sound } from './AudioController';
 
-const MESSAGES = [
-  "Meow! 🐾 Senang bertemu denganmu!",
-  "Egydia & Anabul sedang jalan-jalan ✨",
-  "Semangat ngoding & berkreasi! 💻",
-  "Siap mewujudkan website impianmu! 🚀"
-];
+const POSE_CONFIGS = {
+  walk: {
+    src: '/assets/images/duo_walk_calm.gif',
+    bubble: null,
+    sound: null,
+    duration: 0
+  },
+  jump: {
+    src: '/assets/images/duo_jump_front.gif',
+    bubble: 'Yaaay! 🐾 Jump!',
+    sound: 'space',
+    duration: 2200
+  },
+  wave: {
+    src: '/assets/images/duo_wave_front.gif',
+    bubble: 'Halo dari Egydia & Anabul! 👋✨',
+    sound: 'toggle',
+    duration: 2500
+  },
+  cuddle: {
+    src: '/assets/images/egydia_cat_cuddle.gif',
+    bubble: 'Meow! 🐾 Sayang anabul kesayangan ❤️',
+    sound: 'click',
+    duration: 2500
+  }
+};
+
+const CLICK_SEQUENCE = ['jump', 'wave', 'cuddle'];
 
 export default function WalkingDuo({ isDarkMode }) {
-  const [bubbleText, setBubbleText] = useState('');
+  const [currentPose, setCurrentPose] = useState('walk');
+  const [clickCount, setClickCount] = useState(0);
   const [showBubble, setShowBubble] = useState(false);
-  const [jump, setJump] = useState(false);
-  const [msgIdx, setMsgIdx] = useState(0);
+  const timerRef = useRef(null);
 
   const handleClick = (e) => {
     e.stopPropagation();
-    sound.play('space');
-    setJump(true);
-    setTimeout(() => setJump(false), 350);
 
-    setBubbleText(MESSAGES[msgIdx % MESSAGES.length]);
-    setMsgIdx(prev => prev + 1);
+    // Determine next pose in sequence: 1x -> jump, 2x -> wave, 3x -> cuddle, etc.
+    const nextPose = CLICK_SEQUENCE[clickCount % CLICK_SEQUENCE.length];
+    const config = POSE_CONFIGS[nextPose];
+
+    setClickCount(prev => prev + 1);
+    setCurrentPose(nextPose);
     setShowBubble(true);
 
-    setTimeout(() => {
+    if (config.sound) {
+      sound.play(config.sound);
+    }
+
+    // Reset back to calm walking after the pose finishes
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    timerRef.current = setTimeout(() => {
+      setCurrentPose('walk');
       setShowBubble(false);
-    }, 3200);
+    }, config.duration);
   };
 
+  const activeConfig = POSE_CONFIGS[currentPose] || POSE_CONFIGS.walk;
+
   return (
-    <div className="relative w-full h-16 overflow-hidden pointer-events-none z-20 select-none">
+    <div className="fixed bottom-14 sm:bottom-16 left-0 right-0 h-14 pointer-events-none z-30 select-none overflow-hidden">
       
-      {/* Walking Track */}
+      {/* Walking Track directly above BottomNav */}
       <div 
         onClick={handleClick}
-        title="Klik Egydia & Kucing!"
-        className={`absolute bottom-0 animate-walk-across pointer-events-auto cursor-pointer flex flex-col items-center transition-transform duration-200 ${
-          jump ? '-translate-y-3' : ''
-        }`}
+        title="Klik 1x Lompat, 2x Melambai, 3x Gendong Kucing!"
+        className={`absolute bottom-0 ${currentPose === 'walk' ? 'animate-walk-across' : 'animate-walk-across [animation-play-state:paused]'} pointer-events-auto cursor-pointer flex flex-col items-center transition-all duration-300`}
       >
         {/* Interactive Speech Bubble */}
-        {showBubble && (
-          <div className={`mb-1 px-2.5 py-1 rounded-lg text-[10px] font-mono shadow-lg whitespace-nowrap animate-bounce border ${
+        {showBubble && activeConfig.bubble && (
+          <div className={`mb-1 px-2.5 py-1 rounded-xl text-[10px] font-mono shadow-xl whitespace-nowrap animate-bounce border ${
             isDarkMode 
               ? 'bg-cosmos-950/95 border-indigo-500/40 text-indigo-300 shadow-indigo-950/80' 
-              : 'bg-white border-slate-300 text-slate-800 shadow-md'
+              : 'bg-white/95 border-slate-300 text-slate-800 shadow-md'
           }`}>
-            <span>{bubbleText}</span>
+            <span>{activeConfig.bubble}</span>
           </div>
         )}
 
-        {/* Seamless Transparent Sprite (Egydia with glasses + Tabby Cat) */}
+        {/* Transparent Pixel Character Sprite (Egydia & Cat) */}
         <img
-          src="/assets/images/egydia_cat_walking_duo.gif"
-          alt="Egydia & Tabby Cat Walking"
-          className="h-14 w-auto [image-rendering:pixelated] drop-shadow-[0_4px_8px_rgba(0,0,0,0.4)]"
+          src={activeConfig.src}
+          alt={`Egydia & Tabby Cat - ${currentPose}`}
+          className="h-14 w-auto [image-rendering:pixelated] drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] transition-transform duration-200 hover:scale-110 active:scale-95"
         />
       </div>
 
