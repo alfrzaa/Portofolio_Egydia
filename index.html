@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="designer">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Egydia Alfariza Ramadhani | Frontend Web Developer & UI/UX Designer</title>
+  <meta name="description" content="Portofolio interaktif dan antimainstream Egydia Alfariza Ramadhani, S.Kom. (Cum Laude 3.94 GPA). Menggabungkan UI/UX Design berbasis Figma dengan implementasi Frontend modern (React.js, Tailwind CSS, JavaScript).">
+  <meta name="keywords" content="Egydia Alfariza, Frontend Developer, UI/UX Designer, React.js, Tailwind CSS, Portfolio, Web Developer Jambi, Universitas Jambi Cum Laude">
+  <meta name="author" content="Egydia Alfariza Ramadhani">
+  
+  <!-- OpenGraph Meta -->
+  <meta property="og:title" content="Egydia Alfariza Ramadhani — Creative Studio & Dev Portfolio">
+  <meta property="og:description" content="Explore the interactive dual-mode portfolio of Egydia Alfariza: UI/UX Designer & Frontend Developer.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/images/profile-graduation.png">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+
+  <!-- Google Fonts: Outfit (modern geometric display), Plus Jakarta Sans (crisp UI body), JetBrains Mono (dev code) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body class="theme-designer custom-cursor-active">
+
+  <!-- Canvas Background for Matrix / Ambient Particles -->
+  <canvas id="ambientCanvas" class="ambient-canvas"></canvas>
+
+  <!-- Figma Canvas Grid Overlay (Active in Designer Mode) -->
+  <div class="figma-grid-overlay" id="figmaGridOverlay"></div>
+
+  <!-- Custom Magnetic Cursor -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-outline" id="cursorOutline"></div>
+
+  <!-- Inspector Tooltip (Shows bounding box & specs in Designer Mode) -->
+  <div class="spec-inspector" id="specInspector">
+    <span class="spec-tag" id="specTag">div.component</span>
+    <span class="spec-dim" id="specDim">320 × 48 px</span>
+  </div>
+
+  <!-- Audio Status Toast -->
+  <div class="sound-toast" id="soundToast">🔊 SFX Enabled</div>
+
+  <!-- ================= TOP NAV BAR ================= -->
+  <header class="studio-header" id="mainHeader">
+    <div class="nav-container">
+      
+      <!-- Brand Logo -->
+      <a href="#hero" class="brand-badge" id="brandLogo">
+        <div class="brand-avatar">
+          <img src="assets/images/profile-formal.jpg" alt="Egydia Alfariza" />
+        </div>
+        <div class="brand-info">
+          <span class="brand-name">EGYDIA ALFARIZA<span class="brand-dot">.</span></span>
+          <span class="brand-role">S.Kom. · Cum Laude (3.94)</span>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="nav-menu" id="navMenu">
+        <a href="#hero" class="nav-link active" data-section="hero">Home</a>
+        <a href="#projects" class="nav-link" data-section="projects">Projects</a>
+        <a href="#skills" class="nav-link" data-section="skills">Skills</a>
+        <a href="#experience" class="nav-link" data-section="experience">Experience</a>
+        <a href="#certifications" class="nav-link" data-section="certifications">Credentials</a>
+        <a href="#contact" class="nav-link" data-section="contact">Contact</a>
+      </nav>
+
+      <!-- Antimainstream Controls: Mode Switcher & Tools -->
+      <div class="nav-controls">
+        
+        <!-- Mode Switcher Pill -->
+        <div class="mode-switcher-pill" title="Pilih Mode Pengalaman Portofolio">
+          <button class="mode-btn active" id="btnModeDesigner" data-mode="designer" title="🎨 Mode UI/UX Designer: Visual Canvas, Specs & Artboards">
+            <i class="fa-solid fa-pen-nib"></i>
+            <span>Designer</span>
+          </button>
+          <button class="mode-btn" id="btnModeDev" data-mode="dev" title="⚡ Mode Frontend Dev: Monospace, Terminal HUD, Matrix & Code Specs">
+            <i class="fa-solid fa-code"></i>
+            <span>Developer</span>
+          </button>
+          <button class="mode-btn" id="btnModeEditorial" data-mode="editorial" title="✨ Mode Luxe Editorial: Estetika Magazine & Warm Minimalist">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span>Editorial</span>
+          </button>
+        </div>
+
+        <!-- Audio FX Toggle -->
+        <button class="icon-tool-btn" id="soundToggleBtn" aria-label="Toggle Sound Effects" title="Aktifkan/Matikan Efek Suara (Web Audio)">
+          <i class="fa-solid fa-volume-high" id="soundIcon"></i>
+        </button>
+
+        <!-- CLI Terminal Launcher Button -->
+        <button class="icon-tool-btn terminal-trigger-btn" id="terminalToggleBtn" aria-label="Open Terminal" title="Buka Interactive CLI Terminal (Tekan `~`)">
+          <i class="fa-solid fa-terminal"></i>
+          <span class="hotkey-badge">~</span>
+        </button>
+
+        <!-- Mobile Menu Hamburger -->
+        <button class="mobile-toggle-btn" id="mobileMenuBtn" aria-label="Toggle Navigation">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Live Status Bar Ribbon (Dev / Studio Metrics) -->
+  <div class="studio-status-ribbon">
+    <div class="ribbon-content">
+      <span class="status-item live-pulse"><i class="fa-solid fa-circle"></i> AVAILABLE FOR FULL-TIME / FREELANCE</span>
+      <span class="status-divider">|</span>
+      <span class="status-item"><i class="fa-solid fa-graduation-cap"></i> UNIVERSITAS JAMBI (GPA 3.94 / CUM LAUDE)</span>
+      <span class="status-divider">|</span>
+      <span class="status-item"><i class="fa-solid fa-trophy"></i> BEST GROUP MSIB FINAL PROJECT (TRIPIN)</span>
+      <span class="status-divider">|</span>
+      <span class="status-item"><i class="fa-solid fa-star"></i> 1ST BEST PROJECT RAJAPHARMA (TEST SCORE 91.67%)</span>
+      <span class="status-divider">|</span>
+      <span class="status-item"><i class="fa-solid fa-check-double"></i> SIMTA-UM USABILITY SCORE: 87.50 (GRADE A)</span>
+    </div>
+  </div>
+
+  <main>
+    <!-- ================= HERO SECTION ================= -->
+    <section class="hero-section" id="hero">
+      <div class="hero-container">
+        
+        <!-- Left: Dynamic Typography & Introduction -->
+        <div class="hero-content">
+          <div class="hero-pill-badge animate-fade-in">
+            <span class="sparkle-icon">✨</span>
+            <span>Bridging Figma Precision with Clean Frontend Engineering</span>
+          </div>
+
+          <h1 class="hero-title">
+            Crafting <span class="gradient-text">Pixel-Perfect</span><br>
+            Digital Experiences<span class="accent-period">.</span>
+          </h1>
+
+          <p class="hero-description">
+            Halo! Saya <strong>Egydia Alfariza Ramadhani, S.Kom.</strong> — Lulusan Sistem Informasi <em>Cum Laude</em> (IPK 3.94) Universitas Jambi. Berfokus pada <strong>Frontend Web Development</strong> (React.js, Tailwind CSS, Modern JS) dan <strong>UI/UX Design</strong> (User Research, Prototyping Figma, Design Systems).
+          </p>
+
+          <!-- Action CTA Group -->
+          <div class="hero-cta-group">
+            <a href="#projects" class="btn btn-primary btn-magnetic">
+              <span>Jelajahi 6 Proyek</span>
+              <i class="fa-solid fa-arrow-down-long"></i>
+            </a>
+
+            <button class="btn btn-secondary btn-magnetic" id="heroTerminalBtn">
+              <i class="fa-solid fa-terminal"></i>
+              <span>Buka Terminal CLI</span>
+            </button>
+
+            <a href="https://wa.me/6282227376330?text=Halo%20Egydia%2C%20saya%20tertarik%20untuk%20mendiskusikan%20peluang%20project%20atau%20karir%20dengan%20Anda." target="_blank" rel="noopener" class="btn btn-whatsapp btn-magnetic">
+              <i class="fa-brands fa-whatsapp"></i>
+              <span>Hubungi Saya</span>
+            </a>
+          </div>
+
+          <!-- Quick Metrics Bar -->
+          <div class="hero-stats-row">
+            <div class="stat-box">
+              <span class="stat-num" data-target="3.94">3.94</span>
+              <span class="stat-label">IPK Cum Laude</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-num" data-target="6">6+</span>
+              <span class="stat-label">Featured Projects</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-num" data-target="87.5">87.5</span>
+              <span class="stat-label">SUS Score (Grade A)</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-num" data-target="8">8+</span>
+              <span class="stat-label">Sertifikasi BNSP & Komdigi</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: 3D Tilt Holographic ID Card -->
+        <div class="hero-card-wrapper">
+          <div class="id-card-3d" id="tiltCard" title="Arahkan kursor untuk efek 3D Tilt & Hologram!">
+            <div class="card-inner">
+              
+              <!-- Front Side -->
+              <div class="card-face card-front">
+                <!-- Holographic Glare Filter -->
+                <div class="holo-glare" id="holoGlare"></div>
+                
+                <div class="card-header-bar">
+                  <div class="card-chip">
+                    <i class="fa-solid fa-microchip"></i>
+                    <span>CREATIVE PASS</span>
+                  </div>
+                  <div class="card-security-badge">
+                    <span class="badge-dot"></span>
+                    <span>VERIFIED DEV & DESIGNER</span>
+                  </div>
+                </div>
+
+                <div class="card-photo-container">
+                  <img src="assets/images/profile-graduation.png" alt="Egydia Alfariza Ramadhani" class="card-photo" />
+                  <div class="photo-glow"></div>
+                  <div class="photo-corner top-left"></div>
+                  <div class="photo-corner bottom-right"></div>
+                  <div class="card-honors-ribbon">
+                    <i class="fa-solid fa-award"></i> CUM LAUDE · 3.94
+                  </div>
+                </div>
+
+                <div class="card-meta">
+                  <h2 class="card-name">Egydia Alfariza R.</h2>
+                  <div class="card-roles">
+                    <span class="role-pill"><i class="fa-solid fa-laptop-code"></i> Frontend Dev</span>
+                    <span class="role-pill"><i class="fa-solid fa-bezier-curve"></i> UI/UX Designer</span>
+                  </div>
+                  <div class="card-institution">
+                    <i class="fa-solid fa-building-columns"></i> Universitas Jambi (S.Kom. 2022–2026)
+                  </div>
+                </div>
+
+                <div class="card-footer-strip">
+                  <div class="card-code">
+                    <span>ID // UNJA-SI-2026</span>
+                    <span class="hash-tag">#ANTIMAINSTREAM</span>
+                  </div>
+                  <div class="card-qr-box" title="Scan / Klik untuk WhatsApp" id="cardQrClick">
+                    <i class="fa-solid fa-qrcode"></i>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Back Side (Revealed on Click/Flip) -->
+              <div class="card-face card-back">
+                <div class="card-back-header">
+                  <span>SECURITY & TECH CREDENTIALS</span>
+                  <button class="card-flip-btn" id="cardFlipBtn" title="Balik Kartu"><i class="fa-solid fa-rotate"></i></button>
+                </div>
+
+                <div class="card-back-body">
+                  <div class="barcode-strip">
+                    <div class="barcode-lines"></div>
+                    <span class="barcode-number">0822-2737-6330 // alfrzaa</span>
+                  </div>
+
+                  <div class="credential-list">
+                    <div class="cred-item">
+                      <i class="fa-solid fa-shield-halved text-accent"></i>
+                      <div>
+                        <strong>BNSP Keamanan Siber Muda</strong>
+                        <p>Certified Junior Cyber Security</p>
+                      </div>
+                    </div>
+                    <div class="cred-item">
+                      <i class="fa-solid fa-award text-yellow"></i>
+                      <div>
+                        <strong>Best Group MSIB Batch 7</strong>
+                        <p>PT Rakamin Kolektif Madani (TripIn)</p>
+                      </div>
+                    </div>
+                    <div class="cred-item">
+                      <i class="fa-solid fa-chart-line text-blue"></i>
+                      <div>
+                        <strong>Google Analytics Certified</strong>
+                        <p>Data & User Behavior Tracking</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="card-signature">
+                    <span class="sig-name">Egydia Alfariza R.</span>
+                    <span class="sig-label">Authorized Signature</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="tilt-hint"><i class="fa-solid fa-hand-pointer"></i> Klik kartu untuk membalik · Gerakkan kursor untuk efek 3D</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= FEATURED PROJECTS SHOWCASE (6 PROJECTS) ================= -->
+    <section class="projects-section" id="projects">
+      <div class="section-container">
+        
+        <div class="section-header">
+          <div class="section-pill"><i class="fa-solid fa-layer-group"></i> PORTFOLIO WORK</div>
+          <h2 class="section-title">FEATURED <span class="gradient-text">PROJECTS</span></h2>
+          <p class="section-subtitle">
+            Kompilasi 6 proyek nyata yang mencakup perancangan antarmuka pengguna interaktif di Figma, implementasi frontend modern dengan React.js dan Tailwind CSS, hingga pengujian kegunaan berskala empiris.
+          </p>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="project-filter-bar">
+          <button class="filter-btn active" data-filter="all">Semua Proyek (6)</button>
+          <button class="filter-btn" data-filter="web-app">Web Apps & SaaS</button>
+          <button class="filter-btn" data-filter="mobile">Mobile Apps</button>
+          <button class="filter-btn" data-filter="thesis">Skripsi & Riset</button>
+          <button class="filter-btn" data-filter="corporate">Corporate</button>
+        </div>
+
+        <!-- Projects Grid -->
+        <div class="projects-grid" id="projectsGrid">
+
+          <!-- PROJECT 01: SIMTA-UM -->
+          <article class="project-card bento-card" data-category="thesis web-app" data-project-id="simta">
+            <div class="project-artboard-tag">Artboard 01 // Thesis Project</div>
+            <div class="project-image-wrapper">
+              <img src="assets/images/projects/simta-hero.jpg" alt="SIMTA-UM Thesis Management System" loading="lazy" />
+              <div class="project-overlay">
+                <span class="btn-inspect"><i class="fa-solid fa-expand"></i> Inspect Live Specs</span>
+              </div>
+              <div class="project-award-badge gold">
+                <i class="fa-solid fa-medal"></i> SUS Score: 87.50 (Grade A)
+              </div>
+            </div>
+            <div class="project-details">
+              <div class="project-tags">
+                <span class="tech-tag react"><i class="fa-brands fa-react"></i> React.js</span>
+                <span class="tech-tag tailwind">Tailwind CSS</span>
+                <span class="tech-tag figma"><i class="fa-brands fa-figma"></i> Figma</span>
+                <span class="tech-tag php">PHP & MySQL</span>
+              </div>
+              <h3 class="project-title">SIMTA-UM — Sistem Informasi Manajemen Tugas Akhir</h3>
+              <p class="project-desc">
+                Sistem manajemen tugas akhir berbasis web untuk Universitas Merangin dengan metodologi prototyping. Mengintegrasikan 4 hak akses (Mahasiswa, Dosen, Koordinator TA, Superadmin) dari pendaftaran judul, logbook bimbingan, hingga pendaftaran ujian.
+              </p>
+              <div class="project-footer">
+                <div class="project-role"><i class="fa-solid fa-user-check"></i> Lead Researcher & Frontend Dev</div>
+                <button class="project-cta-btn" onclick="openProjectModal('simta')">Detail Proyek <i class="fa-solid fa-arrow-right"></i></button>
+              </div>
+            </div>
+          </article>
+
+          <!-- PROJECT 02: RajaPharma -->
+          <article class="project-card bento-card" data-category="web-app" data-project-id="rajapharma">
+            <div class="project-artboard-tag">Artboard 02 // Enterprise SaaS</div>
+            <div class="project-image-wrapper">
+              <img src="assets/images/projects/rajapharma-dashboard.png" alt="RajaPharma Pharmacy Management System" loading="lazy" />
+              <div class="project-overlay">
+                <span class="btn-inspect"><i class="fa-solid fa-expand"></i> Inspect Live Specs</span>
+              </div>
+              <div class="project-award-badge emerald">
+                <i class="fa-solid fa-trophy"></i> 1st Best Project · 91.67% Test Rate
+              </div>
+            </div>
+            <div class="project-details">
+              <div class="project-tags">
+                <span class="tech-tag react"><i class="fa-brands fa-react"></i> React.js</span>
+                <span class="tech-tag tailwind">Tailwind CSS</span>
+                <span class="tech-tag pos"><i class="fa-solid fa-cash-register"></i> POS System</span>
+              </div>
+              <h3 class="project-title">RajaPharma — Pharmacy Management System</h3>
+              <p class="project-desc">
+                Sistem informasi manajemen apotek digital mencakup Point of Sale (POS), pencatatan transaksi, cetak struk belanja, manajemen inventaris obat otomatis (notifikasi kadaluarsa & stok minimum), dan laporan penjualan komprehensif.
+              </p>
+              <div class="project-footer">
+                <div class="project-role"><i class="fa-solid fa-user-gear"></i> Project Manager & Frontend Dev</div>
+                <button class="project-cta-btn" onclick="openProjectModal('rajapharma')">Detail Proyek <i class="fa-solid fa-arrow-right"></i></button>
+              </div>
+            </div>
+          </article>
+
+          <!-- PROJECT 03: TripIn -->
+          <article class="project-card bento-card" data-category="mobile web-app" data-project-id="tripin">
+            <div class="project-artboard-tag">Artboard 03 // MBKM Final Project</div>
+            <div class="project-image-wrapper mobile-preview-cover">
+              <img src="assets/images/projects/tripin-screen-1.png" alt="TripIn Shuttle Bus App" class="mobile-shot shot-1" loading="lazy" />
+              <img src="assets/images/projects/tripin-screen-4.png" alt="TripIn Seat Selection" class="mobile-shot shot-2" loading="lazy" />
+              <img src="assets/images/projects/tripin-screen-7.png" alt="TripIn E-Ticket" class="mobile-shot shot-3" loading="lazy" />
+              <div class="project-overlay">
+                <span class="btn-inspect"><i class="fa-solid fa-expand"></i> Inspect Mobile Flow</span>
+              </div>
+              <div class="project-award-badge purple">
+                <i class="fa-solid fa-star"></i> Best Group of Final Project (MSIB)
+              </div>
+            </div>
+            <div class="project-details">
+              <div class="project-tags">
+                <span class="tech-tag react"><i class="fa-brands fa-react"></i> React.js</span>
+                <span class="tech-tag tailwind">Tailwind CSS</span>
+                <span class="tech-tag uiux">Mobile-First UI</span>
+                <span class="tech-tag payment">Prepaid Gateway</span>
+              </div>
+              <h3 class="project-title">TripIn — Airport-to-Hotel Shuttle Bus Booking</h3>
+              <p class="project-desc">
+                Aplikasi pemesanan tiket bus bandara ke hotel dengan fitur pemilihan titik jemput interaktif, pemilihan kursi real-time, sistem poin cashback, pembayaran e-wallet, dan e-ticket dengan barcode scanner.
+              </p>
+              <div class="project-footer">
+                <div class="project-role"><i class="fa-solid fa-palette"></i> Frontend Dev & UI/UX Designer</div>
+                <button class="project-cta-btn" onclick="openProjectModal('tripin')">Detail Proyek <i class="fa-solid fa-arrow-right"></i></button>
+              </div>
+            </div>
+          </article>
+
+          <!-- PROJECT 04: PT Affan Technology (Parto.id) -->
+          <article class="project-card bento-card" data-category="corporate" data-project-id="partoid">
+            <div class="project-artboard-tag">Artboard 04 // Internship Project</div>
+            <div class="project-image-wrapper">
+              <img src="assets/images/projects/partoid-landing.jpg" alt="PT Affan Technology Indonesia (Parto.id)" loading="lazy" />
+              <div class="project-overlay">
+                <span class="btn-inspect"><i class="fa-solid fa-expand"></i> Inspect Live Specs</span>
+              </div>
+              <div class="project-award-badge blue">
+                <i class="fa-solid fa-briefcase"></i> Certified Industry Internship
+              </div>
+            </div>
+            <div class="project-details">
+              <div class="project-tags">
+                <span class="tech-tag wordpress"><i class="fa-brands fa-wordpress"></i> WordPress FSE</span>
+                <span class="tech-tag gutenverse">Gutenverse</span>
+                <span class="tech-tag html"><i class="fa-brands fa-html5"></i> HTML5/CSS3</span>
+                <span class="tech-tag figma"><i class="fa-brands fa-figma"></i> Figma Slicing</span>
+              </div>
+              <h3 class="project-title">Company Profile PT Affan Technology (Parto.id)</h3>
+              <p class="project-desc">
+                Pengembangan website profil perusahaan e-katalog dan pengadaan pemerintah. Mengonversi mockup Figma ke WordPress Full Site Editing, navigasi multi-halaman dinamis, dan pengujian fungsi antarmuka black-box.
+              </p>
+              <div class="project-footer">
+                <div class="project-role"><i class="fa-solid fa-code"></i> Frontend Developer Intern</div>
+                <button class="project-cta-btn" onclick="openProjectModal('partoid')">Detail Proyek <i class="fa-solid fa-arrow-right"></i></button>
+              </div>
+            </div>
+          </article>
+
+          <!-- PROJECT 05: Learnify -->
+          <article class="project-card bento-card" data-category="web-app" data-project-id="learnify">
+            <div class="project-artboard-tag">Artboard 05 // EdTech Dashboard</div>
+            <div class="project-image-wrapper">
+              <img src="assets/images/projects/learnify-dashboard.png" alt="Learnify Student Dashboard" loading="lazy" />
+              <div class="project-overlay">
+                <span class="btn-inspect"><i class="fa-solid fa-expand"></i> Inspect Live Specs</span>
+              </div>
+            </div>
+            <div class="project-details">
+              <div class="project-tags">
+                <span class="tech-tag js"><i class="fa-brands fa-js"></i> Vanilla JS</span>
+                <span class="tech-tag html"><i class="fa-brands fa-html5"></i> Semantic HTML5</span>
+                <span class="tech-tag css"><i class="fa-brands fa-css3-alt"></i> Modern CSS</span>
+                <span class="tech-tag uiux">Dashboard UX</span>
+              </div>
+              <h3 class="project-title">Learnify — Educational Platform Student Dashboard</h3>
+              <p class="project-desc">
+                Antarmuka dashboard pembelajaran interaktif untuk siswa dalam memantau progres materi perkuliahan, notifikasi pengumpulan tugas, modul peringkat kelas, dan pengelolaan profil profil siswa secara fleksibel.
+              </p>
+              <div class="project-footer">
+                <div class="project-role"><i class="fa-solid fa-pen-ruler"></i> UI/UX Designer & Frontend Dev</div>
+                <button class="project-cta-btn" onclick="openProjectModal('learnify')">Detail Proyek <i class="fa-solid fa-arrow-right"></i></button>
+              </div>
+            </div>
+          </article>
+
+          <!-- PROJECT 06: Regional Tourism Landing Page -->
+          <article class="project-card bento-card" data-category="corporate" data-project-id="tourism">
+            <div class="project-artboard-tag">Artboard 06 // Landing Page UI</div>
+            <div class="project-image-wrapper">
+              <img src="assets/images/projects/tourism-frontend.png" alt="Regional Tourism Landing Page" loading="lazy" />
+              <div class="project-overlay">
+                <span class="btn-inspect"><i class="fa-solid fa-expand"></i> Inspect Live Specs</span>
+              </div>
+            </div>
+            <div class="project-details">
+              <div class="project-tags">
+                <span class="tech-tag html"><i class="fa-brands fa-html5"></i> HTML5</span>
+                <span class="tech-tag css"><i class="fa-brands fa-css3-alt"></i> Responsive CSS</span>
+                <span class="tech-tag gallery">Interactive Gallery</span>
+              </div>
+              <h3 class="project-title">Regional Tourism — Destination Showcase Landing Page</h3>
+              <p class="project-desc">
+                Landing page responsif untuk mempromosikan destinasi pariwisata unggulan daerah (seperti Kerinci Mountain). Dilengkapi sistem navigasi intuitif, hero showcase, kartu atraksi interaktif, dan galeri foto responsif.
+              </p>
+              <div class="project-footer">
+                <div class="project-role"><i class="fa-solid fa-compass"></i> UI/UX Designer & Frontend Dev</div>
+                <button class="project-cta-btn" onclick="openProjectModal('tourism')">Detail Proyek <i class="fa-solid fa-arrow-right"></i></button>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SKILLS & BENTO LAB SECTION ================= -->
+    <section class="skills-section" id="skills">
+      <div class="section-container">
+        
+        <div class="section-header">
+          <div class="section-pill"><i class="fa-solid fa-cubes"></i> CORE COMPETENCY</div>
+          <h2 class="section-title">SKILLS & <span class="gradient-text">TECH RADAR</span></h2>
+          <p class="section-subtitle">
+            Kombinasi kemampuan mendesain sistem antarmuka berbasis bukti (user research & usability scale) dengan kemampuan mengimplementasikannya ke dalam arsitektur kode frontend yang tangguh dan modular.
+          </p>
+        </div>
+
+        <!-- Master Bento Grid -->
+        <div class="bento-matrix">
+          
+          <!-- Bento Card 1: UI/UX Discipline -->
+          <div class="bento-box bento-large ui-ux-box">
+            <div class="bento-icon-header">
+              <div class="box-icon"><i class="fa-brands fa-figma"></i></div>
+              <span class="box-sub">DESIGN DISCIPLINES</span>
+            </div>
+            <h3 class="box-heading">UI/UX & Interactive Design</h3>
+            <p class="box-text">
+              Berpengalaman merancang alur pengguna dari hulu ke hilir menggunakan metodologi User-Centered Design, Wireframing, Hi-Fi Prototyping di Figma, hingga pengujian System Usability Scale (SUS) dengan hasil Grade A (87.50).
+            </p>
+            <div class="skill-chips-cloud">
+              <span class="chip active"><i class="fa-solid fa-check"></i> User Research</span>
+              <span class="chip active"><i class="fa-solid fa-check"></i> Wireframing</span>
+              <span class="chip active"><i class="fa-solid fa-check"></i> Hi-Fi Prototyping</span>
+              <span class="chip active"><i class="fa-solid fa-check"></i> Design Systems</span>
+              <span class="chip active"><i class="fa-solid fa-check"></i> System Usability Scale (SUS)</span>
+              <span class="chip active"><i class="fa-solid fa-check"></i> Mobile & Web Responsive</span>
+              <span class="chip active"><i class="fa-solid fa-check"></i> Component Slicing</span>
+            </div>
+          </div>
+
+          <!-- Bento Card 2: Frontend Engineering -->
+          <div class="bento-box bento-large dev-box">
+            <div class="bento-icon-header">
+              <div class="box-icon"><i class="fa-brands fa-react"></i></div>
+              <span class="box-sub">ENGINEERING STACK</span>
+            </div>
+            <h3 class="box-heading">Frontend Web Development</h3>
+            <p class="box-text">
+              Menerjemahkan ide dan desain visual menjadi aplikasi web berperforma tinggi, ramah SEO, dan responsif di seluruh ukuran layar dengan clean code & modular architecture.
+            </p>
+            <div class="tech-meter-list">
+              <div class="meter-item">
+                <div class="meter-header">
+                  <span><i class="fa-brands fa-react"></i> React.js (Hooks, State, Routing)</span>
+                  <span class="meter-pct">92%</span>
+                </div>
+                <div class="meter-bar"><div class="meter-fill" style="width: 92%"></div></div>
+              </div>
+              <div class="meter-item">
+                <div class="meter-header">
+                  <span><i class="fa-brands fa-css3-alt"></i> Tailwind CSS & Vanilla CSS3</span>
+                  <span class="meter-pct">95%</span>
+                </div>
+                <div class="meter-bar"><div class="meter-fill" style="width: 95%"></div></div>
+              </div>
+              <div class="meter-item">
+                <div class="meter-header">
+                  <span><i class="fa-brands fa-js"></i> JavaScript (ES6+, DOM, Fetch)</span>
+                  <span class="meter-pct">90%</span>
+                </div>
+                <div class="meter-bar"><div class="meter-fill" style="width: 90%"></div></div>
+              </div>
+              <div class="meter-item">
+                <div class="meter-header">
+                  <span><i class="fa-brands fa-wordpress"></i> WordPress FSE & Gutenverse</span>
+                  <span class="meter-pct">88%</span>
+                </div>
+                <div class="meter-bar"><div class="meter-fill" style="width: 88%"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bento Card 3: Academic Honors -->
+          <div class="bento-box bento-medium honor-box">
+            <div class="bento-icon-header">
+              <div class="box-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+              <span class="box-sub">ACADEMIC EXCELLENCE</span>
+            </div>
+            <h3 class="box-heading">Universitas Jambi</h3>
+            <div class="big-metric">3.94 <span class="metric-unit">/ 4.00</span></div>
+            <span class="badge-cumlaude"><i class="fa-solid fa-crown"></i> Cum Laude (With Honors)</span>
+            <p class="box-text text-sm">
+              Program Studi Sistem Informasi, Fakultas Sains & Teknologi (2022–2026). Skripsi: Analisis & Perancangan Frontend SIMTA-UM dengan Metode Prototype.
+            </p>
+          </div>
+
+          <!-- Bento Card 4: Tools & Ecosystem -->
+          <div class="bento-box bento-medium tools-box">
+            <div class="bento-icon-header">
+              <div class="box-icon"><i class="fa-solid fa-toolbox"></i></div>
+              <span class="box-sub">TOOLING WORKFLOW</span>
+            </div>
+            <h3 class="box-heading">Workflow & Ecosystem</h3>
+            <div class="tools-grid-icons">
+              <div class="tool-tile" title="Figma Design"><i class="fa-brands fa-figma"></i><span>Figma</span></div>
+              <div class="tool-tile" title="Visual Studio Code"><i class="fa-solid fa-code"></i><span>VS Code</span></div>
+              <div class="tool-tile" title="Git & GitHub"><i class="fa-brands fa-git-alt"></i><span>Git</span></div>
+              <div class="tool-tile" title="Node & NPM"><i class="fa-brands fa-node-js"></i><span>Node.js</span></div>
+              <div class="tool-tile" title="MySQL Database"><i class="fa-solid fa-database"></i><span>MySQL</span></div>
+              <div class="tool-tile" title="Postman API"><i class="fa-solid fa-paper-plane"></i><span>Postman</span></div>
+            </div>
+          </div>
+
+          <!-- Bento Card 5: Soft Skills & Team Leadership -->
+          <div class="bento-box bento-wide soft-skills-box">
+            <div class="bento-icon-header">
+              <div class="box-icon"><i class="fa-solid fa-users-gear"></i></div>
+              <span class="box-sub">COLLABORATION & MINDSET</span>
+            </div>
+            <h3 class="box-heading">Professional & Interpersonal Strengths</h3>
+            <div class="soft-skills-grid">
+              <div class="soft-item">
+                <i class="fa-solid fa-lightbulb"></i>
+                <div>
+                  <strong>Problem Solving & Critical Thinking</strong>
+                  <p>Menghadirkan solusi arsitektur desain yang berorientasi pada kemudahan pengguna nyata.</p>
+                </div>
+              </div>
+              <div class="soft-item">
+                <i class="fa-solid fa-people-group"></i>
+                <div>
+                  <strong>Scrum & Sprint Leadership</strong>
+                  <p>Berpengalaman memimpin tim sebagai Project Manager & Frontend Developer pada RajaPharma.</p>
+                </div>
+              </div>
+              <div class="soft-item">
+                <i class="fa-solid fa-comments"></i>
+                <div>
+                  <strong>Cross-Functional Communication</strong>
+                  <p>Mampu menjembatani diskusi antara tim UI/UX, Backend Developer, dan Stakeholder bisnis.</p>
+                </div>
+              </div>
+              <div class="soft-item">
+                <i class="fa-solid fa-bullseye"></i>
+                <div>
+                  <strong>Attention to Detail & Usability</strong>
+                  <p>Presisi hingga hitungan pixel (pixel-perfect) dan konsistensi token desain lintas platform.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= WORK EXPERIENCE TIMELINE ================= -->
+    <section class="experience-section" id="experience">
+      <div class="section-container">
+        
+        <div class="section-header">
+          <div class="section-pill"><i class="fa-solid fa-briefcase"></i> CAREER JOURNEY</div>
+          <h2 class="section-title">EXPERIENCE & <span class="gradient-text">MILESTONES</span></h2>
+          <p class="section-subtitle">
+            Jejak rekam profesional di industri teknologi, program magang bersertifikat, dan studi independen berprestasi.
+          </p>
+        </div>
+
+        <div class="timeline-container">
+
+          <!-- Item 1: SIMTA-UM Thesis Lead -->
+          <div class="timeline-card" data-date="Jan 2026 – Jun 2026">
+            <div class="timeline-marker">
+              <div class="marker-dot"></div>
+            </div>
+            <div class="timeline-content bento-card">
+              <div class="timeline-badge-row">
+                <span class="timeline-badge blue"><i class="fa-solid fa-microscope"></i> Skripsi / Riset Akademik</span>
+                <span class="timeline-date">Januari 2026 – Juni 2026</span>
+              </div>
+              <h3 class="timeline-title">Lead Researcher & Frontend Developer</h3>
+              <h4 class="timeline-company">Sistem Informasi Manajemen Tugas Akhir (SIMTA-UM)</h4>
+              <p class="timeline-text">
+                Melakukan analisis kebutuhan pengguna menyeluruh, merancang prototipe antarmuka di Figma menggunakan metode <em>Prototype</em>, dan mengimplementasikan frontend interaktif menggunakan React.js dan Tailwind CSS untuk 4 peran pengguna. Berhasil meraih skor evaluasi kepuasan <strong>System Usability Scale (SUS) 87.50 (Grade A / Excellent)</strong>.
+              </p>
+            </div>
+          </div>
+
+          <!-- Item 2: PT Affan Technology (Parto.id) -->
+          <div class="timeline-card" data-date="Jul 2025 – Agu 2025">
+            <div class="timeline-marker">
+              <div class="marker-dot"></div>
+            </div>
+            <div class="timeline-content bento-card">
+              <div class="timeline-badge-row">
+                <span class="timeline-badge purple"><i class="fa-solid fa-building"></i> Internship Industri</span>
+                <span class="timeline-date">Juli 2025 – Agustus 2025</span>
+              </div>
+              <h3 class="timeline-title">Frontend Developer Intern</h3>
+              <h4 class="timeline-company">PT Affan Technology Indonesia (PARTO.ID)</h4>
+              <p class="timeline-text">
+                Mengembangkan dan menyesuaikan website company profile resmi PT Affan Technology Indonesia berbasis WordPress berdasarkan mockup UI/UX dari Figma. Memastikan aksesibilitas tata letak yang mulus di seluruh perangkat desktop dan mobile serta melakukan pengujian fungsi antarmuka secara komprehensif.
+              </p>
+              <div class="timeline-photo-row">
+                <img src="assets/images/experience/partoid-team.jpg" alt="PT Affan Technology Team" class="experience-thumb" onclick="openImageLightbox(this.src, 'Kegiatan Magang Frontend Developer di PT Affan Technology Indonesia (Parto.id)')" />
+                <span class="photo-caption"><i class="fa-solid fa-camera"></i> Dokumentasi Tim Magang PT Affan Technology</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 3: RajaPharma Management System -->
+          <div class="timeline-card" data-date="Feb 2025 – Jun 2025">
+            <div class="timeline-marker">
+              <div class="marker-dot"></div>
+            </div>
+            <div class="timeline-content bento-card">
+              <div class="timeline-badge-row">
+                <span class="timeline-badge emerald"><i class="fa-solid fa-trophy"></i> 1st Best Project Award</span>
+                <span class="timeline-date">Februari 2025 – Juni 2025</span>
+              </div>
+              <h3 class="timeline-title">Project Manager, UI/UX Designer & Frontend Developer</h3>
+              <h4 class="timeline-company">RajaPharma — Pharmacy Management System</h4>
+              <p class="timeline-text">
+                Memimpin tim menggunakan kerangka kerja Scrum (Sprint) untuk membangun aplikasi inventaris dan POS apotek berbasis web. Merancang antarmuka di Figma dan mengimplementasikan frontend dengan React.js dan Tailwind CSS, menghantarkan proyek meraih penghargaan <strong>1st Best Project</strong> dari dosen pengampu dengan tingkat keberhasilan pengujian 91.67%.
+              </p>
+            </div>
+          </div>
+
+          <!-- Item 4: MSIB Kampus Merdeka @ PT Rakamin -->
+          <div class="timeline-card" data-date="Sep 2024 – Des 2024">
+            <div class="timeline-marker">
+              <div class="marker-dot"></div>
+            </div>
+            <div class="timeline-content bento-card">
+              <div class="timeline-badge-row">
+                <span class="timeline-badge gold"><i class="fa-solid fa-star"></i> MSIB Kampus Merdeka Batch 7</span>
+                <span class="timeline-date">September 2024 – Desember 2024</span>
+              </div>
+              <h3 class="timeline-title">Independent Study Student (Fullstack Web & Data Science)</h3>
+              <h4 class="timeline-company">PT Rakamin Kolektif Madani</h4>
+              <p class="timeline-text">
+                Menyelesaikan pelatihan intensif mencakup UI/UX Design (User Research, Wireframing, Responsive UI), Frontend (HTML, CSS, React.js), Backend (PHP), Cloud, dan IT Security. Bertindak sebagai Frontend Developer dan UI/UX Designer untuk aplikasi shuttle bus "TripIn", membawa tim memenangkan <strong>Best Group of Final Project</strong>.
+              </p>
+              <div class="timeline-photo-row">
+                <img src="assets/images/experience/rakamin-bestgroup.png" alt="Rakamin Best Group Award" class="experience-thumb" onclick="openImageLightbox(this.src, 'Pemenang Best Group of Final Project - MSIB Batch 7 PT Rakamin Kolektif Madani')" />
+                <span class="photo-caption"><i class="fa-solid fa-award"></i> Penghargaan Pemenang Best Group Final Project (ByteSquad)</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= CERTIFICATIONS VAULT ================= -->
+    <section class="certifications-section" id="certifications">
+      <div class="section-container">
+        
+        <div class="section-header">
+          <div class="section-pill"><i class="fa-solid fa-stamp"></i> CREDENTIALS</div>
+          <h2 class="section-title">VERIFIED <span class="gradient-text">CERTIFICATIONS</span></h2>
+          <p class="section-subtitle">
+            Kredensial resmi dan sertifikasi kompetensi keahlian yang telah divalidasi oleh Badan Nasional Sertifikasi Profesi (BNSP), Kementerian Komunikasi dan Digital (Komdigi), Google, dan lembaga pelatihan nasional.
+          </p>
+        </div>
+
+        <div class="certs-grid">
+          
+          <!-- Cert 1: BNSP Cyber Security -->
+          <div class="cert-card" onclick="openImageLightbox('assets/images/certs/cert-4.png', 'Sertifikat Kompetensi BNSP: Keamanan Siber Muda (Junior Cyber Security)')">
+            <div class="cert-img-box">
+              <img src="assets/images/certs/cert-4.png" alt="BNSP Keamanan Siber Muda" loading="lazy" />
+              <div class="cert-zoom-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i> Lihat Sertifikat</div>
+            </div>
+            <div class="cert-info">
+              <span class="cert-issuer">BNSP / LSP Digital Technology</span>
+              <h4 class="cert-name">Keamanan Siber Muda (Junior Cyber Security)</h4>
+              <p class="cert-desc">Sertifikasi kompetensi resmi profesi keamanan siber tingkat nasional.</p>
+            </div>
+          </div>
+
+          <!-- Cert 2: Rakamin MSIB Kampus Merdeka -->
+          <div class="cert-card" onclick="openImageLightbox('assets/images/certs/cert-1.png', 'Sertifikat Kelulusan MSIB Kampus Merdeka - PT Rakamin Kolektif Madani')">
+            <div class="cert-img-box">
+              <img src="assets/images/certs/cert-1.png" alt="Rakamin MSIB Magang" loading="lazy" />
+              <div class="cert-zoom-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i> Lihat Sertifikat</div>
+            </div>
+            <div class="cert-info">
+              <span class="cert-issuer">Kemendikbudristek & PT Rakamin</span>
+              <h4 class="cert-name">MSIB: Fullstack Web Development & Data Science</h4>
+              <p class="cert-desc">Kelulusan program studi independen bersertifikat angkatan 7.</p>
+            </div>
+          </div>
+
+          <!-- Cert 3: Rakamin Best Group -->
+          <div class="cert-card" onclick="openImageLightbox('assets/images/certs/cert-2.png', 'Sertifikat Penghargaan Best Group of Final Project (TripIn) - Rakamin')">
+            <div class="cert-img-box">
+              <img src="assets/images/certs/cert-2.png" alt="Best Group of Final Project" loading="lazy" />
+              <div class="cert-zoom-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i> Lihat Sertifikat</div>
+            </div>
+            <div class="cert-info">
+              <span class="cert-issuer">PT Rakamin Kolektif Madani</span>
+              <h4 class="cert-name">Best Group of Final Project Award</h4>
+              <p class="cert-desc">Penghargaan tim terbaik pembuatan aplikasi web "TripIn".</p>
+            </div>
+          </div>
+
+          <!-- Cert 4: Komdigi VSGA -->
+          <div class="cert-card" onclick="openImageLightbox('assets/images/certs/cert-8.png', 'Sertifikat Pelatihan Komdigi VSGA: Junior Cyber Security')">
+            <div class="cert-img-box">
+              <img src="assets/images/certs/cert-8.png" alt="Komdigi VSGA Cyber Security" loading="lazy" />
+              <div class="cert-zoom-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i> Lihat Sertifikat</div>
+            </div>
+            <div class="cert-info">
+              <span class="cert-issuer">Komdigi / Digital Talent Scholarship</span>
+              <h4 class="cert-name">Vocational School Graduate Academy (VSGA)</h4>
+              <p class="cert-desc">Pelatihan intensif bidang keamanan informasi dan analisis kerentanan.</p>
+            </div>
+          </div>
+
+          <!-- Cert 5: Google Analytics Certification -->
+          <div class="cert-card" onclick="openImageLightbox('assets/images/certs/cert-5.png', 'Google Analytics Individual Certification')">
+            <div class="cert-img-box">
+              <img src="assets/images/certs/cert-5.png" alt="Google Analytics Certification" loading="lazy" />
+              <div class="cert-zoom-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i> Lihat Sertifikat</div>
+            </div>
+            <div class="cert-info">
+              <span class="cert-issuer">Google Skillshop</span>
+              <h4 class="cert-name">Google Analytics Certification</h4>
+              <p class="cert-desc">Keahlian tracking konversi, user event, dan analisis performa web.</p>
+            </div>
+          </div>
+
+          <!-- Cert 6: Parto.id Internship Certificate -->
+          <div class="cert-card" onclick="openImageLightbox('assets/images/certs/cert-7.png', 'Sertifikat Magang Frontend Developer di PT Affan Technology Indonesia')">
+            <div class="cert-img-box">
+              <img src="assets/images/certs/cert-7.png" alt="Sertifikat Magang Parto.id" loading="lazy" />
+              <div class="cert-zoom-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i> Lihat Sertifikat</div>
+            </div>
+            <div class="cert-info">
+              <span class="cert-issuer">PT Affan Technology Indonesia</span>
+              <h4 class="cert-name">Frontend Developer Internship Certificate</h4>
+              <p class="cert-desc">Sertifikat penyelesaian magang industri dengan predikat Sangat Baik.</p>
+            </div>
+          </div>
+
+          <!-- Cert 7: RevoU Data Analytics -->
+          <div class="cert-card" onclick="openImageLightbox('assets/images/certs/cert-6.png', 'Sertifikat Mini Course Intro to Data Analytics - RevoU')">
+            <div class="cert-img-box">
+              <img src="assets/images/certs/cert-6.png" alt="RevoU Data Analytics" loading="lazy" />
+              <div class="cert-zoom-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i> Lihat Sertifikat</div>
+            </div>
+            <div class="cert-info">
+              <span class="cert-issuer">RevoU Mini Course</span>
+              <h4 class="cert-name">Intro to Data Analytics</h4>
+              <p class="cert-desc">Fundamental pengolahan data analitik, metrics bisnis, dan visualisasi.</p>
+            </div>
+          </div>
+
+          <!-- Cert 8: Komdigi Literasi Digital -->
+          <div class="cert-card" onclick="openImageLightbox('assets/images/certs/cert-9.png', 'Sertifikat Pelatihan Komdigi: Literasi Digital & Pengenalan Artificial Intelligence')">
+            <div class="cert-img-box">
+              <img src="assets/images/certs/cert-9.png" alt="Komdigi Literasi Digital" loading="lazy" />
+              <div class="cert-zoom-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i> Lihat Sertifikat</div>
+            </div>
+            <div class="cert-info">
+              <span class="cert-issuer">Kementerian Kominfo / Komdigi</span>
+              <h4 class="cert-name">Digital Literacy & Mindset Acceleration</h4>
+              <p class="cert-desc">Pengembangan pola pikir adaptif dan tata kelola era transformasi digital.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= CONTACT & CONNECT HUB ================= -->
+    <section class="contact-section" id="contact">
+      <div class="section-container">
+        
+        <div class="contact-box-wrapper">
+          <div class="contact-left">
+            <div class="section-pill"><i class="fa-solid fa-handshake"></i> LET'S WORK TOGETHER</div>
+            <h2 class="contact-heading">TERTARIK BERKOLABORASI ATAU <span class="gradient-text">REKRUTMEN?</span></h2>
+            <p class="contact-sub">
+              Saya siap berkontribusi sebagai <strong>Frontend Web Developer</strong> atau <strong>UI/UX Designer</strong> untuk mewujudkan produk digital yang berorientasi pengguna, modern, dan scalable.
+            </p>
+
+            <div class="contact-direct-cards">
+              <!-- WhatsApp Card -->
+              <a href="https://wa.me/6282227376330?text=Halo%20Egydia%20Alfariza%2C%20saya%20tertarik%20untuk%20mendiskusikan%20peluang%20project%20atau%20karir." target="_blank" rel="noopener" class="direct-card wa">
+                <div class="card-icon"><i class="fa-brands fa-whatsapp"></i></div>
+                <div class="card-text">
+                  <span class="card-label">WhatsApp Direct</span>
+                  <span class="card-val">0822-2737-6330</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square open-arrow"></i>
+              </a>
+
+              <!-- Email Card -->
+              <div class="direct-card mail" onclick="copyToClipboard('egydiaalfariza74@gmail.com', 'Email berhasil disalin!')" title="Klik untuk salin email">
+                <div class="card-icon"><i class="fa-regular fa-envelope"></i></div>
+                <div class="card-text">
+                  <span class="card-label">Email Address (Click to Copy)</span>
+                  <span class="card-val">egydiaalfariza74@gmail.com</span>
+                </div>
+                <i class="fa-regular fa-copy open-arrow"></i>
+              </div>
+
+              <!-- LinkedIn Card -->
+              <a href="https://linkedin.com/in/egydiaalfariza" target="_blank" rel="noopener" class="direct-card in">
+                <div class="card-icon"><i class="fa-brands fa-linkedin-in"></i></div>
+                <div class="card-text">
+                  <span class="card-label">LinkedIn Profile</span>
+                  <span class="card-val">linkedin.com/in/egydiaalfariza</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square open-arrow"></i>
+              </a>
+
+              <!-- GitHub Card -->
+              <a href="https://github.com/alfrzaa" target="_blank" rel="noopener" class="direct-card gh">
+                <div class="card-icon"><i class="fa-brands fa-github"></i></div>
+                <div class="card-text">
+                  <span class="card-label">GitHub Repository</span>
+                  <span class="card-val">github.com/alfrzaa</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square open-arrow"></i>
+              </a>
+
+              <!-- Instagram Card -->
+              <a href="https://instagram.com/alfrrza" target="_blank" rel="noopener" class="direct-card ig">
+                <div class="card-icon"><i class="fa-brands fa-instagram"></i></div>
+                <div class="card-text">
+                  <span class="card-label">Instagram</span>
+                  <span class="card-val">@alfrrza</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square open-arrow"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Right: Interactive Message Box -->
+          <div class="contact-right">
+            <div class="form-glass-card">
+              <div class="form-header">
+                <div class="window-dots">
+                  <span class="dot red"></span>
+                  <span class="dot yellow"></span>
+                  <span class="dot green"></span>
+                </div>
+                <span class="window-title">quick_message.js</span>
+              </div>
+
+              <form id="contactForm" class="contact-form" onsubmit="handleFormSubmit(event)">
+                <div class="form-group">
+                  <label for="senderName"><i class="fa-solid fa-user"></i> Nama Lengkap / Perusahaan</label>
+                  <input type="text" id="senderName" required placeholder="Contoh: Budi Santoso (HR PT Tech...)" />
+                </div>
+
+                <div class="form-group">
+                  <label for="senderEmail"><i class="fa-solid fa-envelope"></i> Email / Kontak</label>
+                  <input type="email" id="senderEmail" required placeholder="nama@perusahaan.com" />
+                </div>
+
+                <div class="form-group">
+                  <label for="messageTopic"><i class="fa-solid fa-tag"></i> Kategori Keperluan</label>
+                  <select id="messageTopic" required>
+                    <option value="Tawaran Pekerjaan (Full-time / Remote)">💼 Tawaran Pekerjaan (Full-time / Remote)</option>
+                    <option value="Proyek Pembuatan Website / UI/UX">🚀 Proyek Pembuatan Website / UI/UX</option>
+                    <option value="Kolaborasi Riset / Konsultasi">💡 Kolaborasi Riset / Konsultasi</option>
+                    <option value="Lainnya">✨ Lainnya</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="senderMessage"><i class="fa-solid fa-message"></i> Pesan Anda</label>
+                  <textarea id="senderMessage" rows="4" required placeholder="Tuliskan gambaran proyek atau peran yang ingin didiskusikan..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-submit-message">
+                  <span>Kirim Pesan ke WhatsApp</span>
+                  <i class="fa-brands fa-whatsapp"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="studio-footer">
+    <div class="footer-container">
+      <div class="footer-col-brand">
+        <span class="footer-logo">EGYDIA ALFARIZA<span class="brand-dot">.</span></span>
+        <p class="footer-tagline">
+          Crafted with love, clean code, and design passion. Graduated with Honors (Cum Laude 3.94 GPA) from Universitas Jambi.
+        </p>
+      </div>
+
+      <div class="footer-links-row">
+        <a href="#hero">Home</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#experience">Experience</a>
+        <a href="#certifications">Credentials</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Egydia Alfariza Ramadhani, S.Kom. All rights reserved.</span>
+        <span class="footer-tech-note">Built with Vanilla HTML5, CSS3 Tokens & ES6+ JavaScript. Designed Antimainstream.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= FLOATING CLI TERMINAL DRAWER ================= -->
+  <div class="cli-drawer" id="cliDrawer">
+    <div class="cli-header" id="cliHeaderDrag">
+      <div class="cli-title-bar">
+        <div class="window-dots">
+          <span class="dot red" id="cliCloseBtn" title="Tutup Terminal"></span>
+          <span class="dot yellow" id="cliMinBtn" title="Minimize Terminal"></span>
+          <span class="dot green" id="cliMaxBtn" title="Maximize Terminal"></span>
+        </div>
+        <span class="cli-title"><i class="fa-solid fa-terminal"></i> egydia-cli // zsh v3.94 (interactive-mode)</span>
+      </div>
+      <div class="cli-actions">
+        <button class="cli-mini-btn" onclick="execCommand('help')" title="Lihat Panduan Command">help</button>
+        <button class="cli-mini-btn" onclick="execCommand('projects')" title="Daftar Proyek">projects</button>
+        <button class="cli-mini-btn" onclick="execCommand('matrix')" title="Matrix Mode">matrix</button>
+        <button class="cli-mini-btn" onclick="execCommand('clear')" title="Bersihkan Layar">clear</button>
+      </div>
+    </div>
+    
+    <div class="cli-body" id="cliBody">
+      <div class="cli-history" id="cliHistory">
+        <div class="cli-line banner">
+<pre class="ascii-art">
+  ___ _____   ______ ___    _      ___  ___ ___ _____  ___ 
+ | __/ __\ \ / /   \_ _|  /_\    / _ \/ __|_ _| __\ \/ / |
+ | _| (_ |\ V /| |) | |  / _ \  | (_) \__ \| || _| >  <|_|
+ |___\___| |_| |___/___|/_/ \_\  \___/|___/___|___/_/\_(_)
+</pre>
+          <div class="cli-welcome-text">
+            Selamat datang di <strong>Egydia CLI v3.94</strong>! Ketik <span class="cmd-highlight">help</span> untuk melihat daftar perintah yang tersedia, atau ketik <span class="cmd-highlight">hire</span> untuk kontak langsung.
+          </div>
+        </div>
+      </div>
+
+      <div class="cli-prompt-line">
+        <span class="prompt-user">guest@egydia-studio</span><span class="prompt-sep">:</span><span class="prompt-path">~</span><span class="prompt-char">$</span>
+        <input type="text" id="cliInput" class="cli-input" autofocus autocomplete="off" spellcheck="false" placeholder="Ketik perintah di sini (misal: help, projects, bio)..." />
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PROJECT DETAIL MODAL WITH DEVICE VIEWER ================= -->
+  <div class="project-modal" id="projectModal" aria-hidden="true">
+    <div class="modal-backdrop" onclick="closeProjectModal()"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-sub" id="modalArtboardTag">ARTBOARD SPEC // 01</span>
+          <h3 class="modal-title" id="modalTitle">Project Title</h3>
+        </div>
+        
+        <div class="modal-actions">
+          <!-- Device Mockup View Switcher (Desktop Browser vs Mobile Phone) -->
+          <div class="device-switcher" id="modalDeviceSwitcher">
+            <button class="device-btn active" id="btnDeviceDesktop" onclick="switchModalDevice('desktop')" title="Tampilan Browser Desktop">
+              <i class="fa-solid fa-desktop"></i> <span>Desktop</span>
+            </button>
+            <button class="device-btn" id="btnDeviceMobile" onclick="switchModalDevice('mobile')" title="Tampilan Smartphone Mobile">
+              <i class="fa-solid fa-mobile-screen-button"></i> <span>Mobile</span>
+            </button>
+          </div>
+          <button class="modal-close-btn" onclick="closeProjectModal()" title="Tutup Modal (ESC)"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        
+        <!-- Interactive Device Frame Container -->
+        <div class="device-frame-container" id="deviceContainer">
+          
+          <!-- Desktop Mockup Frame -->
+          <div class="desktop-mockup" id="desktopMockup">
+            <div class="mockup-header-bar">
+              <div class="mockup-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="mockup-url-bar" id="mockupUrlBar">https://simta.um.alfariza.com</div>
+              <div class="mockup-refresh"><i class="fa-solid fa-arrow-rotate-right"></i></div>
+            </div>
+            <div class="mockup-screen" id="desktopScreen">
+              <img src="" alt="Project Desktop Preview" id="desktopMockupImg" />
+            </div>
+          </div>
+
+          <!-- Mobile Mockup Frame -->
+          <div class="mobile-mockup hidden" id="mobileMockup">
+            <div class="phone-speaker"></div>
+            <div class="phone-screen" id="mobileScreen">
+              <img src="" alt="Project Mobile Preview" id="mobileMockupImg" />
+            </div>
+            <div class="phone-home-indicator"></div>
+          </div>
+
+          <!-- Screenshot Carousel Thumbnails -->
+          <div class="carousel-thumbs" id="carouselThumbs">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Project Info & Design/Dev Tabs -->
+        <div class="modal-info-panel">
+          
+          <div class="info-tabs">
+            <button class="info-tab active" onclick="switchInfoTab('overview', this)">Overview & Impact</button>
+            <button class="info-tab" onclick="switchInfoTab('design', this)">Design & UX Specs</button>
+            <button class="info-tab" onclick="switchInfoTab('code', this)">Engineering & Tech</button>
+          </div>
+
+          <!-- Tab Content: Overview -->
+          <div class="tab-pane active" id="tabOverview">
+            <div class="meta-pills-row" id="modalMetaPills"></div>
+            <h4 class="pane-heading">Ringkasan Proyek</h4>
+            <p class="pane-desc" id="modalFullDesc"></p>
+
+            <div class="highlights-card">
+              <h5 class="highlights-title"><i class="fa-solid fa-star"></i> Capaian Kunci & Metrik</h5>
+              <ul class="highlights-list" id="modalHighlights"></ul>
+            </div>
+          </div>
+
+          <!-- Tab Content: Design & UX Specs -->
+          <div class="tab-pane" id="tabDesign">
+            <h4 class="pane-heading">Design System & UX Methodology</h4>
+            <div class="design-specs-grid" id="modalDesignSpecs">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Tab Content: Engineering & Tech -->
+          <div class="tab-pane" id="tabCode">
+            <h4 class="pane-heading">Architecture & Technology Stack</h4>
+            <div class="code-specs-grid" id="modalCodeSpecs">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Modal Footer CTA -->
+          <div class="modal-footer-cta">
+            <a href="#" target="_blank" rel="noopener" class="btn btn-primary" id="modalLiveLink">
+              <span>Buka Demo / Link Eksternal</span>
+              <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+            <button class="btn btn-secondary" onclick="closeProjectModal()">Tutup Pratinjau</button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= IMAGE LIGHTBOX MODAL (FOR CERTS & PHOTOS) ================= -->
+  <div class="lightbox-modal" id="imageLightbox" aria-hidden="true">
+    <div class="lightbox-backdrop" onclick="closeImageLightbox()"></div>
+    <div class="lightbox-dialog">
+      <button class="lightbox-close-btn" onclick="closeImageLightbox()" title="Tutup (ESC)"><i class="fa-solid fa-xmark"></i></button>
+      <div class="lightbox-image-wrapper">
+        <img src="" alt="Lightbox Preview" id="lightboxImage" />
+      </div>
+      <div class="lightbox-caption" id="lightboxCaption">Caption text here</div>
+    </div>
+  </div>
+
+  <!-- Floating Quick Navigation Dock (Bottom Center) -->
+  <aside class="studio-dock">
+    <div class="dock-container">
+      <a href="#hero" class="dock-item active" data-tooltip="Home"><i class="fa-solid fa-house"></i></a>
+      <a href="#projects" class="dock-item" data-tooltip="6 Projects"><i class="fa-solid fa-layer-group"></i></a>
+      <a href="#skills" class="dock-item" data-tooltip="Skills & Tech"><i class="fa-solid fa-cubes"></i></a>
+      <a href="#experience" class="dock-item" data-tooltip="Experience"><i class="fa-solid fa-briefcase"></i></a>
+      <a href="#certifications" class="dock-item" data-tooltip="Credentials"><i class="fa-solid fa-certificate"></i></a>
+      <a href="#contact" class="dock-item" data-tooltip="Contact"><i class="fa-solid fa-paper-plane"></i></a>
+      <div class="dock-divider"></div>
+      <button class="dock-item dock-terminal" onclick="toggleTerminal()" data-tooltip="Open Terminal (~)"><i class="fa-solid fa-terminal"></i></button>
+      <button class="dock-item dock-scrolltop" onclick="window.scrollTo({top:0, behavior:'smooth'})" data-tooltip="Scroll to Top"><i class="fa-solid fa-arrow-up"></i></button>
+    </div>
+  </aside>
+
+  <!-- Main JavaScript File -->
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
