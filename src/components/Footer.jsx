@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp, Github, Linkedin, Mail, PhoneCall } from 'lucide-react';
 import { sound } from './AudioController';
 import { PERSONAL_INFO } from '../data/portfolioData';
 
-export default function Footer({ isDarkMode, onOpenTerminal }) {
+export default function Footer({ isDarkMode }) {
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
@@ -21,51 +21,105 @@ export default function Footer({ isDarkMode, onOpenTerminal }) {
 
   return (
     <>
-      <footer className={`border-t py-12 transition-colors relative z-10 ${
-        isDarkMode ? 'bg-cosmos-950 border-indigo-950/60 text-slate-400' : 'bg-slate-50 border-slate-200 text-slate-600'
+      <footer className={`border-t pt-12 pb-24 sm:pb-28 transition-colors relative z-10 w-full ${
+        isDarkMode 
+          ? 'bg-gradient-to-b from-cosmos-950 via-[#02040b] to-[#010206] border-indigo-950/40 text-slate-400' 
+          : 'bg-gradient-to-b from-slate-100 to-slate-200 border-slate-300 text-slate-600'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pb-6 border-b border-indigo-950/30">
             
-            <div>
-              <div className="flex items-center gap-1.5 font-display font-bold text-base">
+            {/* Left: Brand info */}
+            <div className="text-center sm:text-left">
+              <div className="flex items-center justify-center sm:justify-start gap-1.5 font-display font-bold text-base">
                 <span className={isDarkMode ? 'text-white' : 'text-slate-900'}>
                   {PERSONAL_INFO.name}
                 </span>
                 <span className="text-indigo-500 font-mono">.</span>
               </div>
               <p className="text-xs mt-1 max-w-md">
-                Portofolio Frontend Web Developer & UI/UX Designer. Lulusan Sistem Informasi Universitas Jambi (Cum Laude, IPK {PERSONAL_INFO.gpa}).
+                Frontend Web Developer & UI/UX Designer · Lulusan Sistem Informasi Universitas Jambi (Cum Laude, IPK {PERSONAL_INFO.gpa}).
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-5 text-xs font-medium">
-              <a href="#hero" className="hover:text-indigo-400 transition-colors">Home</a>
-              <a href="#projects" className="hover:text-indigo-400 transition-colors">Projects</a>
-              <a href="#skills" className="hover:text-indigo-400 transition-colors">Skills</a>
-              <a href="#experience" className="hover:text-indigo-400 transition-colors">Experience</a>
-              <a href="#certifications" className="hover:text-indigo-400 transition-colors">Credentials</a>
-              <a href="#contact" className="hover:text-indigo-400 transition-colors">Contact</a>
+            {/* Right: Quick Social Icon Links */}
+            <div className="flex items-center gap-2.5">
+              <a
+                href={PERSONAL_INFO.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => sound.play('click')}
+                className={`p-2 rounded-xl border transition-all hover:scale-105 ${
+                  isDarkMode 
+                    ? 'border-indigo-900/50 hover:bg-white/5 text-slate-300 hover:text-white' 
+                    : 'border-slate-300 hover:bg-white text-slate-700'
+                }`}
+                title="GitHub"
+              >
+                <Github className="w-4 h-4" />
+              </a>
+
+              <a
+                href={PERSONAL_INFO.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => sound.play('click')}
+                className={`p-2 rounded-xl border transition-all hover:scale-105 ${
+                  isDarkMode 
+                    ? 'border-indigo-900/50 hover:bg-white/5 text-slate-300 hover:text-white' 
+                    : 'border-slate-300 hover:bg-white text-slate-700'
+                }`}
+                title="LinkedIn"
+              >
+                <Linkedin className="w-4 h-4" />
+              </a>
+
+              <a
+                href={PERSONAL_INFO.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => sound.play('click')}
+                className={`p-2 rounded-xl border transition-all hover:scale-105 ${
+                  isDarkMode 
+                    ? 'border-indigo-900/50 hover:bg-white/5 text-slate-300 hover:text-white' 
+                    : 'border-slate-300 hover:bg-white text-slate-700'
+                }`}
+                title="WhatsApp"
+              >
+                <PhoneCall className="w-4 h-4" />
+              </a>
+
+              <a
+                href={`mailto:${PERSONAL_INFO.email}`}
+                onClick={() => sound.play('click')}
+                className={`p-2 rounded-xl border transition-all hover:scale-105 ${
+                  isDarkMode 
+                    ? 'border-indigo-900/50 hover:bg-white/5 text-slate-300 hover:text-white' 
+                    : 'border-slate-300 hover:bg-white text-slate-700'
+                }`}
+                title="Email"
+              >
+                <Mail className="w-4 h-4" />
+              </a>
             </div>
 
           </div>
 
-          <div className="mt-8 pt-6 border-t border-indigo-950/30 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-3">
+          {/* Bottom Copyright Strip */}
+          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2 text-center sm:text-left">
             <span>© 2026 {PERSONAL_INFO.name}, S.Kom. All rights reserved.</span>
-            <div className="flex items-center gap-1">
-              <span>Dibangun dengan React 18, Vite & Tailwind CSS</span>
-            </div>
+            <span>Dibangun dengan React 18, Vite & Tailwind CSS</span>
           </div>
         </div>
       </footer>
 
-      {/* Discrete Floating Scroll to Top button (only shows when scrolled) */}
+      {/* Floating Scroll to Top button (only shows when scrolled, positioned cleanly above bottom nav) */}
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className={`fixed bottom-6 right-6 z-40 p-3 rounded-full border shadow-xl transition-all duration-300 hover:scale-110 ${
+          className={`fixed bottom-20 sm:bottom-20 right-4 sm:right-6 z-30 p-2.5 rounded-full border shadow-xl transition-all duration-300 hover:scale-110 ${
             isDarkMode 
-              ? 'bg-indigo-950/90 border-indigo-500/40 text-indigo-300 hover:text-white shadow-indigo-950/50' 
+              ? 'bg-indigo-950/90 border-indigo-500/40 text-indigo-300 hover:text-white shadow-indigo-950/60' 
               : 'bg-white border-slate-300 text-slate-700 hover:text-slate-900 shadow-md'
           }`}
           title="Kembali ke Atas"

@@ -54,16 +54,16 @@ export default function App() {
   };
 
   return (
-    <div className={`min-h-screen relative font-sans pb-16 sm:pb-20 transition-colors duration-500 selection:bg-indigo-500 selection:text-white ${
+    <div className={`min-h-screen relative font-sans transition-colors duration-500 selection:bg-indigo-500 selection:text-white ${
       isDarkMode 
         ? 'bg-[#030712] text-slate-100' 
         : 'bg-[#f8fafc] text-slate-900'
     }`}>
       
-      {/* Animated Custom Cursor (Smooth trailing ring & starlight glow) */}
+      {/* Animated Custom Star Cursor */}
       <CustomCursor isDarkMode={isDarkMode} />
 
-      {/* Cosmic / Daylight Canvas Animated Engine with Animated Planet */}
+      {/* Cosmic / Daylight Animated Background Engine with 3D Ringed Planet */}
       <CosmicBackground isDarkMode={isDarkMode} />
 
       {/* Top Navbar */}
@@ -75,7 +75,7 @@ export default function App() {
         setSoundEnabled={setSoundEnabled}
       />
 
-      {/* Main Content */}
+      {/* Main Sections */}
       <main className="relative z-10">
         <HeroSection
           isDarkMode={isDarkMode}
@@ -94,13 +94,13 @@ export default function App() {
         <ContactSection isDarkMode={isDarkMode} />
       </main>
 
-      {/* Footer */}
+      {/* Footer (Seamlessly grounded to the bottom) */}
       <Footer
         isDarkMode={isDarkMode}
         onOpenTerminal={() => setTerminalOpen(true)}
       />
 
-      {/* Mobile-First Bottom Navigation (Icons-only on mobile & tablet) */}
+      {/* Floating Bottom Navigation Bar */}
       <BottomNav isDarkMode={isDarkMode} />
 
       {/* Floating CLI Terminal Drawer */}
