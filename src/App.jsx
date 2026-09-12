@@ -8,12 +8,12 @@ import ExperienceTimeline from './components/ExperienceTimeline';
 import CertificatesVault from './components/CertificatesVault';
 import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
+import BottomNav from './components/BottomNav';
 import InteractiveTerminal from './components/InteractiveTerminal';
 import ImageLightbox from './components/ImageLightbox';
 import { sound } from './components/AudioController';
 
 export default function App() {
-  // Dark mode defaults to true (Cosmic Space Theme)
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const saved = localStorage.getItem('egydia_theme_mode');
     return saved ? saved === 'dark' : true;
@@ -32,7 +32,6 @@ export default function App() {
     }
   }, [isDarkMode]);
 
-  // Global Keyboard Shortcuts (~ to toggle terminal)
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === '`' || e.key === '~') {
@@ -54,7 +53,7 @@ export default function App() {
   };
 
   return (
-    <div className={`min-h-screen relative font-sans transition-colors duration-500 selection:bg-indigo-500 selection:text-white ${
+    <div className={`min-h-screen relative font-sans pb-16 sm:pb-20 transition-colors duration-500 selection:bg-indigo-500 selection:text-white ${
       isDarkMode 
         ? 'bg-[#030712] text-slate-100' 
         : 'bg-[#f8fafc] text-slate-900'
@@ -63,7 +62,7 @@ export default function App() {
       {/* Cosmic / Daylight Canvas Animated Engine */}
       <CosmicBackground isDarkMode={isDarkMode} />
 
-      {/* Top Sticky Navigation */}
+      {/* Top Navbar (Clean Logo & Controls) */}
       <Navbar
         isDarkMode={isDarkMode}
         setIsDarkMode={setIsDarkMode}
@@ -72,7 +71,7 @@ export default function App() {
         setSoundEnabled={setSoundEnabled}
       />
 
-      {/* Main Sections */}
+      {/* Main Content */}
       <main className="relative z-10">
         <HeroSection
           isDarkMode={isDarkMode}
@@ -91,11 +90,14 @@ export default function App() {
         <ContactSection isDarkMode={isDarkMode} />
       </main>
 
-      {/* Footer & Floating Navigation Dock */}
+      {/* Footer */}
       <Footer
         isDarkMode={isDarkMode}
         onOpenTerminal={() => setTerminalOpen(true)}
       />
+
+      {/* Mobile-First Ergonomic Bottom Navigation */}
+      <BottomNav isDarkMode={isDarkMode} />
 
       {/* Floating CLI Terminal Drawer */}
       <InteractiveTerminal
