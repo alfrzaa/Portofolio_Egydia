@@ -10,7 +10,6 @@ import CertificatesVault from './components/CertificatesVault';
 import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import BottomNav from './components/BottomNav';
-import PixelMascot from './components/PixelMascot';
 import InteractiveTerminal from './components/InteractiveTerminal';
 import ImageLightbox from './components/ImageLightbox';
 import { sound } from './components/AudioController';
@@ -103,9 +102,6 @@ export default function App() {
 
       {/* Floating Bottom Navigation Bar */}
       <BottomNav isDarkMode={isDarkMode} />
-
-      {/* Floating Interactive Pixel Art Mascot */}
-      <PixelMascot isDarkMode={isDarkMode} />
 
       {/* Floating CLI Terminal Drawer */}
       <InteractiveTerminal

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowUp, Github, Linkedin, Mail, PhoneCall } from 'lucide-react';
 import { sound } from './AudioController';
 import { PERSONAL_INFO } from '../data/portfolioData';
+import WalkingDuo from './WalkingDuo';
 
 export default function Footer({ isDarkMode }) {
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -21,7 +22,10 @@ export default function Footer({ isDarkMode }) {
 
   return (
     <>
-      <footer className={`pt-4 pb-2 sm:pb-2.5 transition-colors relative z-10 w-full border-t ${
+      {/* Walking Duo: Egydia with round glasses & full-body tabby cat walking on the footer line */}
+      <WalkingDuo isDarkMode={isDarkMode} />
+
+      <footer className={`pt-2 pb-2 sm:pb-2.5 transition-colors relative z-10 w-full border-t ${
         isDarkMode 
           ? 'bg-cosmos-950/70 backdrop-blur-xl border-indigo-500/20 text-slate-400' 
           : 'bg-white/80 backdrop-blur-xl border-slate-200 text-slate-600'

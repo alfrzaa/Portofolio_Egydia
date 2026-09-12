@@ -43,3 +43,35 @@
   backdrop-filter: blur(16px);
   border: 1px solid rgba(226, 232, 240, 0.8);
 }
+
+/* Walking Duo Animation */
+@keyframes walkAcross {
+  0% {
+    left: -100px;
+    transform: scaleX(1);
+  }
+  48% {
+    left: calc(100% - 40px);
+    transform: scaleX(1);
+  }
+  50% {
+    left: calc(100% - 40px);
+    transform: scaleX(-1);
+  }
+  98% {
+    left: -100px;
+    transform: scaleX(-1);
+  }
+  100% {
+    left: -100px;
+    transform: scaleX(1);
+  }
+}
+
+.animate-walk-across {
+  animation: walkAcross 30s linear infinite;
+}
+
+.animate-walk-across:hover {
+  animation-play-state: paused;
+}
