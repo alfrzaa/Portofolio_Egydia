@@ -43,9 +43,9 @@ export default function BottomNav({ isDarkMode }) {
   return (
     <nav 
       aria-label="Bottom Navigation"
-      className="fixed bottom-0 sm:bottom-5 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 sm:w-auto z-40 px-2 sm:px-0"
+      className="fixed bottom-3 sm:bottom-5 left-1/2 -translate-x-1/2 z-40 px-2 sm:px-0 max-w-[95vw]"
     >
-      <div className={`w-full sm:w-auto flex items-center justify-around sm:justify-center gap-1 sm:gap-1.5 px-3 py-2 sm:py-2.5 sm:px-4 rounded-t-2xl sm:rounded-full border backdrop-blur-xl shadow-2xl transition-all duration-300 ${
+      <div className={`flex items-center justify-center gap-1 sm:gap-2 px-2.5 sm:px-4 py-2 sm:py-2.5 rounded-full border backdrop-blur-xl shadow-2xl transition-all duration-300 ${
         isDarkMode
           ? 'bg-cosmos-950/90 border-indigo-500/30 text-slate-400 shadow-indigo-950/60'
           : 'bg-white/95 border-slate-300 text-slate-600 shadow-slate-300/50'
@@ -59,7 +59,9 @@ export default function BottomNav({ isDarkMode }) {
               key={item.id}
               href={item.href}
               onClick={() => sound.play('click')}
-              className={`flex flex-col sm:flex-row items-center gap-1 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-xl transition-all duration-200 text-[11px] sm:text-xs font-semibold ${
+              title={item.label}
+              aria-label={item.label}
+              className={`flex items-center justify-center gap-2 p-2.5 sm:p-2.5 lg:px-3.5 lg:py-2 rounded-full transition-all duration-200 text-xs font-semibold ${
                 isActive
                   ? isDarkMode
                     ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/40 scale-105'
@@ -69,8 +71,9 @@ export default function BottomNav({ isDarkMode }) {
                     : 'hover:text-slate-900 hover:bg-slate-100'
               }`}
             >
-              <Icon className="w-4 h-4 sm:w-4 sm:h-4" />
-              <span>{item.label}</span>
+              <Icon className="w-5 h-5 sm:w-4 sm:h-4 shrink-0" />
+              {/* Text label: hidden on mobile & tablet, only visible on desktop (lg:) */}
+              <span className="hidden lg:inline">{item.label}</span>
             </a>
           );
         })}
