@@ -44,34 +44,62 @@
   border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
-/* Walking Duo Animation */
-@keyframes walkAcross {
+/* Walking Duo Animation: Egy and her following Tabby Cat */
+@keyframes walkEgy {
   0% {
-    left: -80px;
+    left: -70px;
     transform: scaleX(1);
   }
   48% {
-    left: calc(100% - 60px);
+    left: calc(100% - 50px);
     transform: scaleX(1);
   }
   50% {
-    left: calc(100% - 60px);
+    left: calc(100% - 50px);
     transform: scaleX(-1);
   }
   98% {
-    left: -80px;
+    left: -70px;
     transform: scaleX(-1);
   }
   100% {
-    left: -80px;
+    left: -70px;
     transform: scaleX(1);
   }
 }
 
-.animate-walk-across {
-  animation: walkAcross 60s linear infinite;
+@keyframes followCat {
+  0% {
+    left: -115px;
+    transform: scaleX(1);
+  }
+  48% {
+    left: calc(100% - 95px);
+    transform: scaleX(1);
+  }
+  50% {
+    left: calc(100% - 15px);
+    transform: scaleX(-1);
+  }
+  98% {
+    left: -35px;
+    transform: scaleX(-1);
+  }
+  100% {
+    left: -115px;
+    transform: scaleX(1);
+  }
 }
 
-.animate-walk-across:hover {
+.animate-walk-egy {
+  animation: walkEgy 55s linear infinite;
+}
+
+.animate-follow-cat {
+  animation: followCat 55s linear infinite;
+}
+
+.animate-walk-egy:hover,
+.animate-follow-cat:hover {
   animation-play-state: paused;
 }
