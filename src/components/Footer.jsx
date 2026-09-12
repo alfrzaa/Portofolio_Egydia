@@ -21,13 +21,13 @@ export default function Footer({ isDarkMode }) {
 
   return (
     <>
-      <footer className={`border-t pt-12 pb-24 sm:pb-28 transition-colors relative z-10 w-full ${
+      <footer className={`pt-12 pb-24 sm:pb-28 transition-colors relative z-10 w-full border-t ${
         isDarkMode 
-          ? 'bg-gradient-to-b from-cosmos-950 via-[#02040b] to-[#010206] border-indigo-950/40 text-slate-400' 
-          : 'bg-gradient-to-b from-slate-100 to-slate-200 border-slate-300 text-slate-600'
+          ? 'bg-cosmos-950/60 backdrop-blur-xl border-indigo-500/20 text-slate-400' 
+          : 'bg-white/70 backdrop-blur-xl border-slate-200 text-slate-600'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pb-6 border-b border-indigo-950/30">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pb-6 border-b border-indigo-500/10">
             
             {/* Left: Brand info */}
             <div className="text-center sm:text-left">
@@ -35,9 +35,9 @@ export default function Footer({ isDarkMode }) {
                 <span className={isDarkMode ? 'text-white' : 'text-slate-900'}>
                   {PERSONAL_INFO.name}
                 </span>
-                <span className="text-indigo-500 font-mono">.</span>
+                <span className="text-indigo-400 font-mono">.</span>
               </div>
-              <p className="text-xs mt-1 max-w-md">
+              <p className="text-xs mt-1 max-w-md opacity-80">
                 Frontend Web Developer & UI/UX Designer · Lulusan Sistem Informasi Universitas Jambi (Cum Laude, IPK {PERSONAL_INFO.gpa}).
               </p>
             </div>
@@ -51,8 +51,8 @@ export default function Footer({ isDarkMode }) {
                 onClick={() => sound.play('click')}
                 className={`p-2 rounded-xl border transition-all hover:scale-105 ${
                   isDarkMode 
-                    ? 'border-indigo-900/50 hover:bg-white/5 text-slate-300 hover:text-white' 
-                    : 'border-slate-300 hover:bg-white text-slate-700'
+                    ? 'border-indigo-500/20 bg-indigo-950/30 hover:bg-white/10 text-slate-300 hover:text-white' 
+                    : 'border-slate-300 bg-white hover:bg-slate-50 text-slate-700'
                 }`}
                 title="GitHub"
               >
@@ -66,8 +66,8 @@ export default function Footer({ isDarkMode }) {
                 onClick={() => sound.play('click')}
                 className={`p-2 rounded-xl border transition-all hover:scale-105 ${
                   isDarkMode 
-                    ? 'border-indigo-900/50 hover:bg-white/5 text-slate-300 hover:text-white' 
-                    : 'border-slate-300 hover:bg-white text-slate-700'
+                    ? 'border-indigo-500/20 bg-indigo-950/30 hover:bg-white/10 text-slate-300 hover:text-white' 
+                    : 'border-slate-300 bg-white hover:bg-slate-50 text-slate-700'
                 }`}
                 title="LinkedIn"
               >
@@ -81,8 +81,8 @@ export default function Footer({ isDarkMode }) {
                 onClick={() => sound.play('click')}
                 className={`p-2 rounded-xl border transition-all hover:scale-105 ${
                   isDarkMode 
-                    ? 'border-indigo-900/50 hover:bg-white/5 text-slate-300 hover:text-white' 
-                    : 'border-slate-300 hover:bg-white text-slate-700'
+                    ? 'border-indigo-500/20 bg-indigo-950/30 hover:bg-white/10 text-slate-300 hover:text-white' 
+                    : 'border-slate-300 bg-white hover:bg-slate-50 text-slate-700'
                 }`}
                 title="WhatsApp"
               >
@@ -94,8 +94,8 @@ export default function Footer({ isDarkMode }) {
                 onClick={() => sound.play('click')}
                 className={`p-2 rounded-xl border transition-all hover:scale-105 ${
                   isDarkMode 
-                    ? 'border-indigo-900/50 hover:bg-white/5 text-slate-300 hover:text-white' 
-                    : 'border-slate-300 hover:bg-white text-slate-700'
+                    ? 'border-indigo-500/20 bg-indigo-950/30 hover:bg-white/10 text-slate-300 hover:text-white' 
+                    : 'border-slate-300 bg-white hover:bg-slate-50 text-slate-700'
                 }`}
                 title="Email"
               >
@@ -106,14 +106,14 @@ export default function Footer({ isDarkMode }) {
           </div>
 
           {/* Bottom Copyright Strip */}
-          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2 text-center sm:text-left">
+          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2 text-center sm:text-left opacity-75">
             <span>© 2026 {PERSONAL_INFO.name}, S.Kom. All rights reserved.</span>
             <span>Dibangun dengan React 18, Vite & Tailwind CSS</span>
           </div>
         </div>
       </footer>
 
-      {/* Floating Scroll to Top button (only shows when scrolled, positioned cleanly above bottom nav) */}
+      {/* Floating Scroll to Top button */}
       {showScrollTop && (
         <button
           onClick={scrollToTop}
