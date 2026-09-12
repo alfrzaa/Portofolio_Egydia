@@ -20,7 +20,7 @@ export default function CosmicBackground({ isDarkMode }) {
 
     window.addEventListener('resize', handleResize);
 
-    // Stars & meteors configuration
+    // Stars configuration
     const starCount = Math.floor((width * height) / 5000);
     const stars = [];
 
@@ -119,7 +119,7 @@ export default function CosmicBackground({ isDarkMode }) {
           }
         }
       } else {
-        // Light Mode: Subtle floating ambient nodes / soft particles
+        // Light Mode: Subtle floating ambient nodes
         stars.slice(0, Math.floor(stars.length * 0.35)).forEach(p => {
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.radius * 1.5, 0, Math.PI * 2);
@@ -144,13 +144,72 @@ export default function CosmicBackground({ isDarkMode }) {
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden transition-colors duration-700">
-      {/* Dynamic Cosmic Gradient Blobs */}
+      
+      {/* Cosmic / Daylight Nebulae Gradient Glows */}
       {isDarkMode ? (
         <>
           <div className="absolute top-[-10%] left-[15%] w-[600px] h-[600px] rounded-full bg-indigo-900/20 blur-[140px] animate-pulse-slow" />
           <div className="absolute top-[40%] right-[-5%] w-[650px] h-[650px] rounded-full bg-purple-900/20 blur-[160px] animate-pulse-slow" />
           <div className="absolute bottom-[-10%] left-[30%] w-[700px] h-[700px] rounded-full bg-blue-950/30 blur-[150px]" />
-          <div className="absolute top-[25%] left-[50%] w-[350px] h-[350px] rounded-full bg-cyan-950/15 blur-[120px]" />
+
+          {/* ================= ANIMATED CELESTIAL PLANET WITH RINGS ================= */}
+          <div className="absolute top-[10%] right-[4%] sm:right-[8%] pointer-events-none opacity-80 select-none animate-float">
+            <div className="relative w-36 h-36 sm:w-48 sm:h-48 flex items-center justify-center">
+              
+              {/* Planetary Atmospheric Outer Glow */}
+              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-purple-600/30 to-cyan-400/20 blur-2xl animate-pulse-slow" />
+
+              {/* Tilted Planetary Rings (Back half behind planet) */}
+              <div 
+                className="absolute w-56 sm:w-72 h-14 sm:h-20 rounded-[100%] border-4 sm:border-[5px] border-indigo-400/40 shadow-[0_0_25px_rgba(99,102,241,0.5)]"
+                style={{
+                  transform: 'rotate(-25deg) skewX(-15deg)',
+                }}
+              />
+              <div 
+                className="absolute w-64 sm:w-80 h-16 sm:h-22 rounded-[100%] border border-cyan-400/30 opacity-70"
+                style={{
+                  transform: 'rotate(-25deg) skewX(-15deg)',
+                }}
+              />
+
+              {/* The Planet Sphere */}
+              <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden shadow-[inset_-12px_-12px_28px_rgba(0,0,0,0.85),0_0_30px_rgba(99,102,241,0.4)] bg-gradient-to-tr from-[#0b0c26] via-[#2c1d68] to-[#4338ca]">
+                
+                {/* Surface Atmosphere / Cloud Bandings */}
+                <div className="absolute inset-0 opacity-40 mix-blend-overlay bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-200 via-purple-600 to-transparent" />
+                <div className="absolute top-1/4 -left-4 w-40 h-2 bg-indigo-300/25 blur-[1px] transform -rotate-12" />
+                <div className="absolute top-1/2 -left-4 w-40 h-3 bg-purple-300/20 blur-[1px] transform -rotate-12" />
+                <div className="absolute top-3/4 -left-4 w-40 h-1.5 bg-cyan-300/30 blur-[1px] transform -rotate-12" />
+
+                {/* Spherical Shadow overlay for 3D depth */}
+                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/80" />
+              </div>
+
+              {/* Tilted Planetary Rings (Front half in front of planet) */}
+              <div 
+                className="absolute w-56 sm:w-72 h-14 sm:h-20 rounded-[100%] border-b-4 sm:border-b-[5px] border-indigo-400/60 pointer-events-none"
+                style={{
+                  transform: 'rotate(-25deg) skewX(-15deg)',
+                  clipPath: 'polygon(0% 50%, 100% 50%, 100% 100%, 0% 100%)'
+                }}
+              />
+
+              {/* Small Orbiting Moon */}
+              <div 
+                className="absolute w-3.5 h-3.5 rounded-full bg-cyan-200 shadow-[0_0_10px_rgba(34,211,238,0.9)] animate-pulse"
+                style={{
+                  top: '15%',
+                  left: '12%'
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Secondary Distant Moon in Lower Left */}
+          <div className="hidden lg:block absolute bottom-[22%] left-[4%] pointer-events-none opacity-60 animate-float" style={{ animationDelay: '3s' }}>
+            <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#0f172a] via-[#1e1b4b] to-[#38bdf8] shadow-[0_0_20px_rgba(56,189,248,0.4)] border border-cyan-400/20" />
+          </div>
         </>
       ) : (
         <>

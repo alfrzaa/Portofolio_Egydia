@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CosmicBackground from './components/CosmicBackground';
+import CustomCursor from './components/CustomCursor';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import ProjectsSection from './components/ProjectsSection';
@@ -59,10 +60,13 @@ export default function App() {
         : 'bg-[#f8fafc] text-slate-900'
     }`}>
       
-      {/* Cosmic / Daylight Canvas Animated Engine */}
+      {/* Animated Custom Cursor (Smooth trailing ring & starlight glow) */}
+      <CustomCursor isDarkMode={isDarkMode} />
+
+      {/* Cosmic / Daylight Canvas Animated Engine with Animated Planet */}
       <CosmicBackground isDarkMode={isDarkMode} />
 
-      {/* Top Navbar (Clean Logo & Controls) */}
+      {/* Top Navbar */}
       <Navbar
         isDarkMode={isDarkMode}
         setIsDarkMode={setIsDarkMode}
@@ -96,7 +100,7 @@ export default function App() {
         onOpenTerminal={() => setTerminalOpen(true)}
       />
 
-      {/* Mobile-First Ergonomic Bottom Navigation */}
+      {/* Mobile-First Bottom Navigation (Icons-only on mobile & tablet) */}
       <BottomNav isDarkMode={isDarkMode} />
 
       {/* Floating CLI Terminal Drawer */}
